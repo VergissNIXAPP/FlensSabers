@@ -75,16 +75,10 @@
         </div>
       </div>
 
-      <div class="hero__visual" aria-label="Video Clip – FlensSabers">
-        <div class="poster poster--video">
-          <video class="poster__img" controls playsinline preload="metadata" poster="images/portrait.png">
-            <source src="videos/spinning.mp4" type="video/mp4">
-          </video>
-          <div class="poster__glow" aria-hidden="true"></div>
-          <div class="poster__badge" style="border-color: rgba(255,255,255,.16); box-shadow: 0 12px 32px rgba(0,0,0,.35);">
-            <span class="dot dot--red"></span>
-            <span class="badge__text">Training Clip</span>
-          </div>
+      <div class="hero__visual">
+        <div class="poster">
+          <img src="images/portrait.png" alt="Training – FlensSabers" class="poster__img" />
+                                </div>
         </div>
       </div>
     </section>
@@ -172,12 +166,14 @@
     // tiny cinema touches
     document.getElementById('y').textContent = new Date().getFullYear();
     const bg = document.querySelector('.bg__image');
+    const poster = document.querySelector('.poster');
 
     const onMove = (e) => {
       const w = window.innerWidth, h = window.innerHeight;
       const x = (e.clientX / w - 0.5);
       const y = (e.clientY / h - 0.5);
       bg.style.transform = `scale(1.06) translate(${x * 16}px, ${y * 10}px)`;
+      poster.style.transform = `translateY(${y * -6}px) rotateX(${y * 6}deg) rotateY(${x * -8}deg)`;
     };
     window.addEventListener('mousemove', onMove, { passive: true });
   </script>
