@@ -335,6 +335,7 @@ a{ color:inherit; }
 .footer{ padding: 20px 0 6px; }
 .footer__inner{
   display:flex;
+  flex-wrap:wrap;
   justify-content:space-between;
   gap: 12px;
   align-items:center;
@@ -354,4 +355,192 @@ a{ color:inherit; }
   .split{ grid-template-columns: 1fr; }
   .join{ grid-template-columns: 1fr; }
   .nav{ display:none; }
+}
+
+
+
+/* === Training Info Card === */
+.info-card{
+  margin: 18px 0 14px;
+  padding: 16px 16px 14px;
+  border-radius: var(--r);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: 0 14px 40px rgba(0,0,0,.35);
+}
+.info-card h3{
+  margin: 0 0 10px;
+  font-size: 1.02rem;
+  letter-spacing: .2px;
+}
+.info-list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+.info-list li{
+  display:flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.10);
+}
+.info-place{ font-weight: 700; }
+.info-time{ color: var(--muted); font-weight: 600; white-space: nowrap; }
+.info-note{
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: .95rem;
+}
+
+/* === PSV Badge (subtle) === */
+.psv-badge{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+}
+.psv-badge__logo{
+  width: 28px;
+  height: 28px;
+  opacity: .75;
+  filter: saturate(.95);
+}
+.psv-badge__text{
+  font-size: .92rem;
+  color: var(--muted);
+  letter-spacing: .1px;
+}
+
+/* Email button spacing on small screens */
+.btn--mail{
+  display:inline-flex;
+}
+@media (max-width: 520px){
+  .psv-badge{ width:100%; justify-content:center; }
+}
+
+
+/* === Standalone Schedule Block === */
+.schedule-block{
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: var(--r2);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: 0 18px 60px rgba(0,0,0,.35);
+}
+.schedule-block__inner{ padding: 6px; }
+.schedule-block__head h3{
+  margin: 0 0 6px;
+  font-size: 1.12rem;
+  letter-spacing: .2px;
+}
+.schedule-block__head p{
+  margin: 0 0 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.schedule-block__grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 12px;
+}
+.schedule-card{
+  border-radius: 18px;
+  padding: 14px 14px;
+  background: rgba(0,0,0,.24);
+  border: 1px solid rgba(255,255,255,.10);
+  backdrop-filter: blur(10px);
+}
+.schedule-card__place{
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+.schedule-card__time{
+  margin-top: 6px;
+  color: rgba(234,240,255,.78);
+  font-weight: 650;
+}
+@media (max-width: 720px){
+  .schedule-block__grid{ grid-template-columns: 1fr; }
+}
+
+
+/* === Intro Video Modal === */
+.video-modal{
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.video-modal.is-open{ display:flex; }
+.video-modal__backdrop{
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(8px);
+}
+.video-modal__panel{
+  position: relative;
+  width: min(980px, 96vw);
+  border-radius: 26px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+  box-shadow: 0 26px 90px rgba(0,0,0,.65);
+  overflow: hidden;
+}
+.video-modal__close{
+  position:absolute;
+  right: 12px;
+  top: 10px;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.30);
+  color: rgba(234,240,255,.92);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: 0 16px 40px rgba(0,0,0,.45);
+}
+.video-modal__close:hover{ transform: translateY(-1px); }
+.video-modal__frame{
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: rgba(0,0,0,.55);
+}
+.video-modal__video{
+  width: 100%;
+  height: 100%;
+  display:block;
+}
+.video-modal__hint{
+  padding: 10px 14px 14px;
+  color: rgba(234,240,255,.72);
+  font-size: 13px;
+}
+
+
+.location-clickable{
+  cursor:pointer;
+  text-decoration:none;
+  color:inherit;
+  display:block;
+}
+.location-clickable:hover{
+  transform:translateY(-2px);
+  transition:.2s ease;
 }
