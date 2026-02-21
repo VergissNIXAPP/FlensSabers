@@ -181,6 +181,28 @@
 </footer>
 </main>
 
+<!-- Secret Members Login (opens with 6x tap on logo in "Mitmachen" section) -->
+<div class="gate" id="memberGate" aria-hidden="true">
+  <div class="gate__backdrop" data-gate-close></div>
+  <div class="gate__panel" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+    <button class="gate__close" type="button" aria-label="Schließen" data-gate-close>×</button>
+    <div class="gate__head">
+      <div class="gate__badge">Mitglieder Login</div>
+      <h2 id="gateTitle">FlensSabers – Mitgliederbereich</h2>
+      <p class="gate__sub">Gib das Passwort ein, um fortzufahren.</p>
+    </div>
+    <form class="gate__form" id="memberGateForm" autocomplete="off">
+      <label class="gate__label" for="memberPass">Passwort</label>
+      <input class="gate__input" id="memberPass" type="password" inputmode="text" placeholder="••••••••" />
+      <div class="gate__row">
+        <button class="btn btn--primary gate__btn" type="submit">Einloggen</button>
+        <button class="btn btn--ghost gate__btn" type="button" data-gate-close>Abbrechen</button>
+      </div>
+      <div class="gate__error" id="gateError" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+
 
 <script>
     // tiny cinema touches
@@ -228,6 +250,94 @@
       }, { once:true });
     })();
 
+  </script>
+
+  <script>
+    // Secret members gate: 6x tap on the logo in the "Mitmachen" section -> password modal -> members.html
+    (function(){
+      const gate = document.getElementById('memberGate');
+      const form = document.getElementById('memberGateForm');
+      const pass = document.getElementById('memberPass');
+      const err  = document.getElementById('gateError');
+      if(!gate || !form || !pass) return;
+
+      const openGate = () => {
+        gate.classList.add('is-open');
+        gate.setAttribute('aria-hidden','false');
+        if(err) err.textContent = '';
+        pass.value = '';
+        setTimeout(() => pass.focus(), 60);
+      };
+      const closeGate = () => {
+        gate.classList.remove('is-open');
+        gate.setAttribute('aria-hidden','true');
+      };
+
+      gate.querySelectorAll('[data-gate-close]').forEach(el => el.addEventListener('click', closeGate));
+      window.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape' && gate.classList.contains('is-open')) closeGate();
+      });
+
+      // Robust multi-tap handler (works on iOS/Android/desktop)
+      function attachMultiTap(el, tapsRequired, onDone){
+        if(!el) return;
+        let taps = 0;
+        let timer = null;
+        let lastTouchLike = 0;
+
+        const reset = () => {
+          taps = 0;
+          if(timer){ clearTimeout(timer); timer = null; }
+        };
+
+        const bump = (src) => {
+          const now = Date.now();
+          if(src === 'click' && (now - lastTouchLike) < 450) return; // avoid double count after touch
+          if(src !== 'click') lastTouchLike = now;
+
+          taps += 1;
+          if(timer) clearTimeout(timer);
+          // If user pauses too long, start over
+          timer = setTimeout(reset, 1100);
+
+          if(taps >= tapsRequired){
+            reset();
+            onDone && onDone();
+          }
+        };
+
+        // Prefer pointer events
+        if(window.PointerEvent){
+          el.addEventListener('pointerup', (e) => {
+            if(e.isPrimary === false) return;
+            bump('pointer');
+          }, { passive:true });
+        } else {
+          el.addEventListener('touchend', () => bump('touch'), { passive:true });
+          el.addEventListener('mouseup',  () => bump('mouse'),  { passive:true });
+        }
+
+        // Fallback click (some browsers)
+        el.addEventListener('click', () => bump('click'), { passive:true });
+      }
+
+      // Target: Logo image in the join section (bottom)
+      const joinLogo = document.querySelector('#join .join__logo img') || document.querySelector('#join .join__logo');
+      attachMultiTap(joinLogo, 6, openGate);
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const val = (pass.value || '').trim();
+        if(val === 'DarkSide'){
+          try{ sessionStorage.setItem('fs_member', '1'); }catch(_){ }
+          window.location.href = 'members.html';
+          return;
+        }
+        if(err) err.textContent = 'Falsches Passwort. Versuch’s nochmal.';
+        pass.focus();
+        pass.select();
+      });
+    })();
   </script>
 </body>
 </html>
