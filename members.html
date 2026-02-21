@@ -1,319 +1,168 @@
 <!DOCTYPE html>
+
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FlensSabers – Mitgliederbereich</title>
-  <meta name="robots" content="noindex,nofollow" />
-  <link rel="icon" href="images/logo.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>FlensSabers – Mitgliederbereich</title>
+<meta content="noindex,nofollow" name="robots"/>
+<link href="images/logo.png" rel="icon"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
 </head>
 <body>
-  <div class="bg">
-    <div aria-hidden="true" class="bg__image"></div>
-    <div aria-hidden="true" class="bg__vignette"></div>
-    <div aria-hidden="true" class="bg__grain"></div>
-    <div aria-hidden="true" class="bg__sweep"></div>
-  </div>
-
-  <header class="topbar">
-    <div class="topbar__inner">
-      <a class="brand" href="index.html" aria-label="Zurück zur Startseite">
-        <img class="brand__logo" src="images/logo.png" alt="FlensSabers Logo" />
-        <span class="brand__text">FlensSabers</span>
-      </a>
-      <nav class="nav">
-        <a href="index.html#training">Training</a>
-        <a href="index.html#join">Mitmachen</a>
-        <a class="nav__ig" href="https://www.instagram.com/flenssabers/" target="_blank" rel="noreferrer noopener">Instagram</a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="wrap" id="top">
-    <section class="member-hero">
-      <div class="kicker">Mitgliederbereich • FlensSabers</div>
-      <h1 class="member-hero__title">Willkommen auf der Dunklen Seite FlensSabers Mitglied!</h1>
-      <p class="member-hero__sub">
+<div class="bg">
+<div aria-hidden="true" class="bg__image"></div>
+<div aria-hidden="true" class="bg__vignette"></div>
+<div aria-hidden="true" class="bg__grain"></div>
+<div aria-hidden="true" class="bg__sweep"></div>
+</div>
+<header class="topbar">
+<div class="topbar__inner">
+<a aria-label="Zurück zur Startseite" class="brand" href="index.html">
+<img alt="FlensSabers Logo" class="brand__logo" src="images/logo.png"/>
+<span class="brand__text">FlensSabers</span>
+</a>
+<nav class="nav">
+<a href="index.html#training">Training</a>
+<a href="index.html#join">Mitmachen</a>
+<a class="nav__ig" href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">Instagram</a>
+</nav>
+</div>
+</header>
+<main class="wrap" id="top">
+<section class="member-hero">
+<div class="kicker">Mitgliederbereich • FlensSabers</div>
+<h1 class="member-hero__title">Willkommen auf der Dunklen Seite FlensSabers Mitglied!</h1>
+<p class="member-hero__sub">
         Hier kannst du bald intern alles Wichtige finden – und schon jetzt Merch bestellen.
-        <strong>Produkte sind Platzhalter</strong> (du kannst Namen, Preise, Bilder & Varianten später easy im Code anpassen).
+        <strong>Produkte sind Platzhalter</strong> (du kannst Namen, Preise, Bilder &amp; Varianten später easy im Code anpassen).
       </p>
-      <div class="cta" style="margin-top:14px;">
-        <a class="btn btn--ghost" href="index.html">← Zurück zur Homepage</a>
-        <a class="btn btn--primary" href="#shop">🛒 Zum Merch</a>
-      </div>
-    </section>
+<div class="cta" style="margin-top:14px;">
+<a class="btn btn--ghost" href="index.html">← Zurück zur Homepage</a>
+<a class="btn btn--primary" href="#shop">🛒 Zum Merch</a>
+</div>
+</section>
+<section class="section" id="shop">
+<div class="section__head">
+<h2>FlensSabers Merch (intern)</h2>
+<p>Wähle deine Artikel – wir erstellen daraus eine Bestell‑E‑Mail. (Später kannst du hier auch ein richtiges Shop‑System anschließen.)</p>
+</div>
+<div class="shop">
+<div>
+<div class="shop-grid" id="shopGrid"></div>
+</div>
+<aside aria-label="Warenkorb" class="cart">
+<h3>Warenkorb</h3>
+<p class="cart__empty" id="cartEmpty">Noch leer – füge links Produkte hinzu.</p>
+<ul class="cart__list" id="cartList"></ul>
+<div class="cart__row">
+<button class="btn btn--primary" id="sendOrder" type="button">Bestellung senden</button>
+<button class="btn btn--ghost" id="clearCart" type="button">Leeren</button>
+</div>
 
-    <section class="section" id="shop">
-      <div class="section__head">
-        <h2>FlensSabers Merch (intern)</h2>
-        <p>Wähle deine Artikel – wir erstellen daraus eine Bestell‑E‑Mail. (Später kannst du hier auch ein richtiges Shop‑System anschließen.)</p>
-      </div>
 
-      <div class="shop">
-        <div>
-          <div class="shop-grid" id="shopGrid"></div>
-        </div>
+<form autocomplete="on" class="orderform" id="orderForm" style="margin-top:14px;">
+<div class="field">
+<label for="buyerFirst">Vorname</label>
+<input id="buyerFirst" name="buyerFirst" placeholder="z.B. Max" required="" type="text"/>
+</div>
+<div class="field">
+<label for="buyerLast">Nachname</label>
+<input id="buyerLast" name="buyerLast" placeholder="z.B. Mustermann" required="" type="text"/>
+</div>
+<div class="field">
+<label for="buyerEmail">E-Mail</label>
+<input id="buyerEmail" name="buyerEmail" placeholder="name@domain.de" required="" type="email"/>
+</div>
+<div class="field">
+<label for="buyerCode">Passcode</label>
+<input id="buyerCode" name="buyerCode" placeholder="••••" required="" type="password"/>
+</div>
+<p class="fineprint" style="margin:10px 0 0;">
+    Mit dem Absenden wird eine Bestell‑E‑Mail an FlensSabers gesendet.
+  </p>
+</form>
+</aside>
+</div>
+</section>
+<footer class="footer">
+<div class="footer__inner">
+<a href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">Instagram</a>
+<a class="psv-badge" href="https://www.psv-flensburg.de/" rel="noreferrer noopener" target="_blank">
+<img alt="PSV Logo" class="psv-badge__logo" src="images/psv.png"/>
+<span class="psv-badge__text">Mitglied des Sportvereins</span>
+</a>
+<span>© <span id="y"></span> FlensSabers</span>
+</div>
+</footer>
+</main>
+<!-- Gate (also protects direct access to members.html) -->
 
-        <aside class="cart" aria-label="Warenkorb">
-          <h3>Warenkorb</h3>
-          <p class="cart__empty" id="cartEmpty">Noch leer – füge links Produkte hinzu.</p>
-          <ul class="cart__list" id="cartList"></ul>
-          
-          <div class="checkout" aria-label="Bestellung abschließen">
-            <h4 class="checkout__title">Bestellung abschließen</h4>
-            <p class="checkout__sub">Bitte echte Daten eintragen. Zum Absenden wird der interne <strong>Passcode</strong> benötigt.</p>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script><script>
+  // Footer year
+  document.getElementById('y').textContent = new Date().getFullYear();
 
-            <div class="checkout__grid">
-              <div class="field">
-                <label class="field__label" for="buyerFirst">Vorname</label>
-                <input class="field__input" id="buyerFirst" type="text" autocomplete="given-name" placeholder="z.B. Max" />
-              </div>
-              <div class="field">
-                <label class="field__label" for="buyerLast">Nachname</label>
-                <input class="field__input" id="buyerLast" type="text" autocomplete="family-name" placeholder="z.B. Mustermann" />
-              </div>
-              <div class="field field--full">
-                <label class="field__label" for="buyerEmail">E‑Mail</label>
-                <input class="field__input" id="buyerEmail" type="email" autocomplete="email" inputmode="email" placeholder="name@domain.de" />
-              </div>
-              <div class="field field--full">
-                <label class="field__label" for="buyerPasscode">Passcode</label>
-                <input class="field__input" id="buyerPasscode" type="password" inputmode="text" placeholder="fs" />
-                <div class="field__hint">Tipp: Passcode = <strong>fs</strong></div>
+  // EmailJS config
+  const EMAILJS_PUBLIC_KEY  = "QNxPPXY-0C74tuHzP";
+  const EMAILJS_SERVICE_ID  = "service_1jpmsmw";
+  const EMAILJS_TEMPLATE_ID = "template_wo8py0w";
+
+  // Init EmailJS (loaded via CDN script tag above)
+  try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch (e) { console.warn("EmailJS init failed", e); }
+
+  // --- Simple merch placeholders + cart -> EmailJS ---
+  (function () {
+    const PRODUCTS = [
+      { id: 'tee',     name: 'FlensSabers T-Shirt',           meta: 'Black • Unisex • Größen: S–XXL',  price: '22,00 €', images: ['images/shop/tee-front.png', 'images/shop/tee-back.png'] },
+      { id: 'hoodie',  name: 'FlensSabers Kapuzen Hoodie',    meta: 'Black • Premium • Größen: S–XXL', price: '28,00 €', images: ['images/shop/khoodie-front.png', 'images/shop/khoodie-back.png'] },
+      { id: 'pullover',name: 'FlensSabers Pullover',          meta: 'Black • Premium • Größen: S–XXL', price: '26,00 €', images: ['images/shop/pl-front.png', 'images/shop/pl-back.png'] },
+      { id: 'polo',    name: 'FlensSabers Poloshirt',         meta: 'Black • Unisex • Größen: S–XXL',  price: '24,00 €', images: ['images/shop/polo-front.png', 'images/shop/polo-back.png'] },
+      { id: 'jacket',  name: 'FlensSabers Jacke',             meta: 'Black • Premium • Größen: S–XXL', price: '29,00 €', images: ['images/shop/jk-front.png', 'images/shop/jk-back.png'] },
+    ];
+
+    const grid      = document.getElementById('shopGrid');
+    const cartEmpty = document.getElementById('cartEmpty');
+    const cartList  = document.getElementById('cartList');
+    const sendBtn   = document.getElementById('sendOrder');
+    const clearBtn  = document.getElementById('clearCart');
+
+    const form      = document.getElementById('orderForm');
+    const firstEl   = document.getElementById('buyerFirst');
+    const lastEl    = document.getElementById('buyerLast');
+    const emailEl   = document.getElementById('buyerEmail');
+    const codeEl    = document.getElementById('buyerCode');
+
+    const cart = new Map(); // id -> {p, qty}
+
+    const renderGrid = () => {
+      grid.innerHTML = PRODUCTS.map(p => {
+        const imgs = (p.images || []).slice(0, 2).map((src, i) => `
+          <img class="product__img" src="${src}" alt="${p.name} ${i === 0 ? 'Vorderseite' : 'Rückseite'}" loading="lazy" />
+        `).join('');
+
+        return `
+          <article class="product" data-id="${p.id}">
+            <div class="product__imgs">${imgs}</div>
+            <div class="product__body">
+              <h3 class="product__name">${p.name}</h3>
+              <p class="product__meta">${p.meta}</p>
+              <div class="product__row">
+                <span class="pill">Preis: ${p.price}</span>
+                <button class="btn btn--primary" type="button" data-add="${p.id}">+ In den Warenkorb</button>
               </div>
             </div>
+          </article>
+        `;
+      }).join('');
+    };
 
-            <div class="checkout__row">
-              <button class="btn btn--primary" type="button" id="sendOrder">Bestellung senden</button>
-              <button class="btn btn--ghost" type="button" id="clearCart">Leeren</button>
-            </div>
-
-            <div class="checkout__status" id="orderStatus" aria-live="polite"></div>
-          </div>
-
-          <p class="fineprint" style="margin:10px 0 0;">
-            Hinweis: Ohne Server ist das nur „leicht versteckt“. Das Absenden läuft über EmailJS.
-          </p>
-
-        </aside>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="footer__inner">
-        <a href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">Instagram</a>
-        <a class="psv-badge" href="https://www.psv-flensburg.de/" rel="noreferrer noopener" target="_blank">
-          <img alt="PSV Logo" class="psv-badge__logo" src="images/psv.png" />
-          <span class="psv-badge__text">Mitglied des Sportvereins</span>
-        </a>
-        <span>© <span id="y"></span> FlensSabers</span>
-      </div>
-    </footer>
-  </main>
-
-  <!-- Gate (also protects direct access to members.html) -->
-  <div class="gate" id="memberGate" aria-hidden="true">
-    <div class="gate__backdrop" data-gate-close></div>
-    <div class="gate__panel" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
-      <button class="gate__close" type="button" aria-label="Schließen" data-gate-close>×</button>
-      <div class="gate__head">
-        <div class="gate__badge">Mitglieder Login</div>
-        <h2 id="gateTitle">FlensSabers – Mitgliederbereich</h2>
-        <p class="gate__sub">Gib das Passwort ein, um fortzufahren.</p>
-      </div>
-      <form class="gate__form" id="memberGateForm" autocomplete="off">
-        <label class="gate__label" for="memberPass">Passwort</label>
-        <input class="gate__input" id="memberPass" type="password" inputmode="text" placeholder="••••••••" />
-        <div class="gate__row">
-          <button class="btn btn--primary gate__btn" type="submit">Einloggen</button>
-          <a class="btn btn--ghost gate__btn" href="index.html">Zur Startseite</a>
-        </div>
-        <div class="gate__error" id="gateError" aria-live="polite"></div>
-        <div class="gate__hint">Tipp: Öffnen mit <strong>6× Tippen</strong> auf das <strong>Logo</strong>.</div>
-      </form>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-  <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
-
-    // --- Gate protection (client-side) ---
-    (function(){
-      const gate = document.getElementById('memberGate');
-      const form = document.getElementById('memberGateForm');
-      const pass = document.getElementById('memberPass');
-      const err = document.getElementById('gateError');
-
-      const openGate = () => {
-        gate.classList.add('is-open');
-        gate.setAttribute('aria-hidden','false');
-        err.textContent = '';
-        pass.value = '';
-        setTimeout(() => pass.focus(), 50);
-      };
-      const closeGate = () => {
-        gate.classList.remove('is-open');
-        gate.setAttribute('aria-hidden','true');
-      };
-
-      const isAuthed = () => {
-        try{ return sessionStorage.getItem('fs_member') === '1'; }catch(_){ return false; }
-      };
-
-      gate.querySelectorAll('[data-gate-close]').forEach(el => el.addEventListener('click', () => {
-        // On members page, closing without auth -> go home
-        if(!isAuthed()) window.location.href = 'index.html';
-        else closeGate();
-      }));
-
-      window.addEventListener('keydown', (e) => {
-        if(e.key === 'Escape' && gate.classList.contains('is-open')){
-          if(!isAuthed()) window.location.href = 'index.html';
-          else closeGate();
-        }
-      });
-
-      // 6x tap on logo to open gate (useful if gate is closed while authed)
-      function attachMultiTap(el, tapsRequired, onDone){
-        if(!el) return;
-        let taps = 0;
-        let timer = null;
-        let lastTouchLike = 0;
-
-        const reset = () => {
-          taps = 0;
-          if(timer){ clearTimeout(timer); timer = null; }
-        };
-
-        const bump = (src) => {
-          const now = Date.now();
-          if(src === 'click' && (now - lastTouchLike) < 450) return;
-          if(src !== 'click') lastTouchLike = now;
-
-          taps += 1;
-          if(timer) clearTimeout(timer);
-          timer = setTimeout(reset, 1100);
-
-          if(taps >= tapsRequired){
-            reset();
-            onDone && onDone();
-          }
-        };
-
-        if(window.PointerEvent){
-          el.addEventListener('pointerup', (e) => {
-            if(e.isPrimary === false) return;
-            bump('pointer');
-          }, { passive:true });
-        } else {
-          el.addEventListener('touchend', () => bump('touch'), { passive:true });
-          el.addEventListener('mouseup',  () => bump('mouse'),  { passive:true });
-        }
-
-        el.addEventListener('click', () => bump('click'), { passive:true });
-      }
-
-      const headerLogo = document.querySelector('.brand__logo') || document.querySelector('.brand');
-      attachMultiTap(headerLogo, 6, openGate);
-
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const val = (pass.value || '').trim();
-        if(val === 'DarkSide'){
-          try{ sessionStorage.setItem('fs_member', '1'); }catch(_){ }
-          closeGate();
-          return;
-        }
-        err.textContent = 'Falsches Passwort. Versuch’s nochmal.';
-        pass.focus();
-        pass.select();
-      });
-
-      if(!isAuthed()) openGate();
-    })();
-
-
-// --- Simple merch placeholders + cart -> mailto ---
-(function () {
-  const PRODUCTS = [
-    {
-      id: 'tee',
-      name: 'FlensSabers T-Shirt',
-      meta: 'Black • Unisex • Größen: S–XXL',
-      price: '22,00 €',
-      images: ['images/shop/tee-front.png', 'images/shop/tee-back.png']
-    },
-    {
-      id: 'hoodie',
-      name: 'FlensSabers Kapuzen Hoodie',
-      meta: 'Black • Premium • Größen: S–XXL',
-      price: '28,00 €',
-      images: ['images/shop/khoodie-front.png', 'images/shop/khoodie-back.png']
-    },
-    {
-      id: 'pullover',
-      name: 'FlensSabers Pullover',
-      meta: 'Black • Premium • Größen: S–XXL',
-      price: '26,00 €',
-      images: ['images/shop/pl-front.png', 'images/shop/pl-back.png']
-    },
-    {
-      id: 'polo',
-      name: 'FlensSabers Poloshirt',
-      meta: 'Black • Unisex • Größen: S–XXL',
-      price: '24,00 €',
-      images: ['images/shop/polo-front.png', 'images/shop/polo-back.png']
-    },
-    {
-      id: 'jacket',
-      name: 'FlensSabers Jacke',
-      meta: 'Black • Premium • Größen: S–XXL',
-      price: '29,00 €',
-      images: ['images/shop/jk-front.png', 'images/shop/jk-back.png']
-    }
-  ];
-
-  const grid = document.getElementById('shopGrid');
-  const cartEmpty = document.getElementById('cartEmpty');
-  const cartList = document.getElementById('cartList');
-  const sendBtn = document.getElementById('sendOrder');
-  const clearBtn = document.getElementById('clearCart');
-
-  const cart = new Map(); // id -> {p, qty}
-
-  const renderGrid = () => {
-    grid.innerHTML = PRODUCTS.map(p => {
-      const imgs = (p.images || []).slice(0, 2).map((src, i) => `
-        <img class="product__img" src="${src}" alt="${p.name} ${i === 0 ? 'Vorderseite' : 'Rückseite'}" loading="lazy" />
-      `).join('');
-
-      return `
-        <article class="product" data-id="${p.id}">
-          <div class="product__imgs">${imgs}</div>
-          <div class="product__body">
-            <h3 class="product__name">${p.name}</h3>
-            <p class="product__meta">${p.meta}</p>
-            <div class="product__row">
-              <span class="pill">Preis: ${p.price}</span>
-              <button class="btn btn--primary" type="button" data-add="${p.id}">+ In den Warenkorb</button>
-            </div>
-          </div>
-        </article>
-      `;
-    }).join('');
-  };
-
-  const renderCart = () => {
-    const items = [...cart.values()];
-    cartEmpty.style.display = items.length ? 'none' : 'block';
-    cartList.innerHTML = items.map(({p, qty}) => {
-      return `
+    const renderCart = () => {
+      const items = [...cart.values()];
+      cartEmpty.style.display = items.length ? 'none' : 'block';
+      cartList.innerHTML = items.map(({p, qty}) => `
         <li class="cart__item">
           <div>
             <strong>${p.name}</strong>
@@ -325,162 +174,124 @@
             <button class="btn btn--ghost" type="button" data-inc="${p.id}" aria-label="plus">+</button>
           </div>
         </li>
-      `;
-    }).join('');
-  };
-
-  const add = (id) => {
-    const p = PRODUCTS.find(x => x.id === id);
-    if(!p) return;
-    const entry = cart.get(id);
-    cart.set(id, { p, qty: (entry?.qty || 0) + 1 });
-    renderCart();
-  };
-  const inc = (id) => add(id);
-  const dec = (id) => {
-    const entry = cart.get(id);
-    if(!entry) return;
-    const next = entry.qty - 1;
-    if(next <= 0) cart.delete(id);
-    else cart.set(id, { p: entry.p, qty: next });
-    renderCart();
-  };
-
-  
-  const buildOrderText = () => {
-    const items = [...cart.values()];
-    if(!items.length) return null;
-
-    const lines = [];
-    lines.push('Bestellung (Mitgliederbereich):');
-    lines.push('');
-    items.forEach(({p, qty}) => {
-      lines.push(`- ${qty}x ${p.name} | ${p.price}`);
-      lines.push(`  Details: ${p.meta}`);
-    });
-    return lines.join('
-');
-  };
-  };
-
-  renderGrid();
-  renderCart();
-
-  grid.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-add]');
-    if(!btn) return;
-    add(btn.getAttribute('data-add'));
-  });
-
-  cartList.addEventListener('click', (e) => {
-    const incBtn = e.target.closest('[data-inc]');
-    const decBtn = e.target.closest('[data-dec]');
-    if(incBtn) return inc(incBtn.getAttribute('data-inc'));
-    if(decBtn) return dec(decBtn.getAttribute('data-dec'));
-  });
-
-  clearBtn.addEventListener('click', () => {
-    cart.clear();
-    renderCart();
-  });
-
-  
-  // --- EmailJS order sending ---
-  // IMPORTANT: Fill these two values from your EmailJS dashboard:
-  const EMAILJS_SERVICE_ID = 'service_1jpmsmw';
-  const EMAILJS_TEMPLATE_ID = 'template_1sbpjui';
-  const EMAILJS_PUBLIC_KEY  = 'QNxPPXY-0C74tuHzP';
-
-  // Init EmailJS (safe no-op if not filled)
-  try{
-    if(EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'REPLACE_WITH_PUBLIC_KEY'){
-      emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-    }
-  }catch(_){}
-
-  const statusEl = document.getElementById('orderStatus');
-  const setStatus = (msg, ok=true) => {
-    if(!statusEl) return;
-    statusEl.textContent = msg || '';
-    statusEl.classList.toggle('is-error', !ok);
-    statusEl.classList.toggle('is-ok', !!ok);
-  };
-
-  const getBuyer = () => {
-    const first = (document.getElementById('buyerFirst')?.value || '').trim();
-    const last  = (document.getElementById('buyerLast')?.value || '').trim();
-    const email = (document.getElementById('buyerEmail')?.value || '').trim();
-    const code  = (document.getElementById('buyerPasscode')?.value || '').trim();
-    return { first, last, email, code };
-  };
-
-  const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-
-  sendBtn.addEventListener('click', async () => {
-    setStatus('');
-
-    const orderText = buildOrderText();
-    if(!orderText){
-      alert('Warenkorb ist leer.');
-      return;
-    }
-
-    const { first, last, email, code } = getBuyer();
-    if(!first || !last || !email){
-      setStatus('Bitte Vorname, Nachname und E‑Mail ausfüllen.', false);
-      return;
-    }
-    if(!isEmail(email)){
-      setStatus('Bitte eine gültige E‑Mail-Adresse eingeben.', false);
-      return;
-    }
-    if((code || '').toLowerCase() !== 'fs'){
-      setStatus('Falscher Passcode.', false);
-      return;
-    }
-
-    if(EMAILJS_TEMPLATE_ID === 'REPLACE_WITH_TEMPLATE_ID' || EMAILJS_PUBLIC_KEY === 'REPLACE_WITH_PUBLIC_KEY'){
-      setStatus('EmailJS ist noch nicht vollständig eingerichtet (Template ID / Public Key fehlt).', false);
-      return;
-    }
-
-    // Prepare template params
-    const items = [...cart.values()].map(({p, qty}) => ({
-      id: p.id, name: p.name, meta: p.meta, price: p.price, qty
-    }));
-
-    const params = {
-      buyer_first: first,
-      buyer_last: last,
-      buyer_email: email,
-      order_text: orderText,
-      order_items_json: JSON.stringify(items, null, 2)
+      `).join('');
     };
 
-    try{
-      sendBtn.disabled = true;
-      setStatus('Sende Bestellung…', true);
+    const add = (id) => {
+      const p = PRODUCTS.find(x => x.id === id);
+      if (!p) return;
+      const entry = cart.get(id);
+      cart.set(id, { p, qty: (entry?.qty || 0) + 1 });
+      renderCart();
+    };
+    const inc = (id) => add(id);
+    const dec = (id) => {
+      const entry = cart.get(id);
+      if (!entry) return;
+      const next = entry.qty - 1;
+      if (next <= 0) cart.delete(id);
+      else cart.set(id, { p: entry.p, qty: next });
+      renderCart();
+    };
 
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
+    const buildOrder = () => {
+      const items = [...cart.values()];
+      if (!items.length) return null;
 
-      setStatus('Bestellung gesendet! ✅', true);
+      const lines = [];
+      items.forEach(({p, qty}) => {
+        lines.push(`- ${qty}x ${p.name} — ${p.price}`);
+        if (p.meta) lines.push(`  Details: ${p.meta}`);
+      });
+
+      return {
+        items,
+        order_text: lines.join('\n'),
+        order_items_json: JSON.stringify(items.map(({p, qty}) => ({
+          id: p.id, name: p.name, meta: p.meta, price: p.price, qty
+        })))
+      };
+    };
+
+    renderGrid();
+    renderCart();
+
+    grid.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-add]');
+      if (!btn) return;
+      add(btn.getAttribute('data-add'));
+    });
+
+    cartList.addEventListener('click', (e) => {
+      const incBtn = e.target.closest('[data-inc]');
+      const decBtn = e.target.closest('[data-dec]');
+      if (incBtn) return inc(incBtn.getAttribute('data-inc'));
+      if (decBtn) return dec(decBtn.getAttribute('data-dec'));
+    });
+
+    clearBtn.addEventListener('click', () => {
       cart.clear();
       renderCart();
-      // clear fields
-      try{
-        document.getElementById('buyerPasscode').value = '';
-      }catch(_){}
-    }catch(err){
-      console.error(err);
-      setStatus('Fehler beim Senden. Bitte später nochmal versuchen.', false);
-    }finally{
-      sendBtn.disabled = false;
-    }
-  });
+    });
 
-})();
+    // Send order via EmailJS
+    sendBtn.addEventListener('click', async () => {
+      const order = buildOrder();
+      if (!order) {
+        alert('Warenkorb ist leer.');
+        return;
+      }
 
-;
-  </script>
+      const buyer_first = (firstEl.value || '').trim();
+      const buyer_last  = (lastEl.value || '').trim();
+      const buyer_email = (emailEl.value || '').trim();
+      const passcode    = (codeEl.value || '').trim();
+
+      if (!buyer_first || !buyer_last || !buyer_email || !passcode) {
+        alert('Bitte Vorname, Nachname, E‑Mail und Passcode ausfüllen.');
+        return;
+      }
+
+      // very simple email sanity check (browser validation should catch most)
+      if (!/^\S+@\S+\.\S+$/.test(buyer_email)) {
+        alert('Bitte eine gültige E‑Mail-Adresse eingeben.');
+        emailEl.focus();
+        return;
+      }
+
+      // passcode check (do NOT reveal hint)
+      if (passcode !== 'fs') {
+        alert('Passcode ist falsch.');
+        codeEl.focus();
+        codeEl.select();
+        return;
+      }
+
+      sendBtn.disabled = true;
+      sendBtn.textContent = 'Sende…';
+
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          buyer_first,
+          buyer_last,
+          buyer_email,
+          order_text: order.order_text,
+          order_items_json: order.order_items_json
+        });
+
+        alert('Bestellung wurde gesendet ✅');
+        cart.clear();
+        renderCart();
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        alert('Senden fehlgeschlagen. Bitte später nochmal versuchen.');
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'Bestellung senden';
+      }
+    });
+  })();
+</script>
 </body>
 </html>
