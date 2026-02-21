@@ -1027,3 +1027,7 @@ select:focus{
   .shop-grid{ grid-template-columns: 1fr; }
   .cart{ position: relative; top: 0; }
 }
+
+/* Hide media filenames and lightbox meta */
+.media-tile__name { display: none !important; }
+.lightbox__meta { display: none !important; }

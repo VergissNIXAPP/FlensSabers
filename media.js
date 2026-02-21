@@ -132,7 +132,7 @@
       return `
         <button class="media-tile" type="button" data-media-idx="${idx}" aria-label="${label} öffnen: ${m.name}">
           ${thumb}
-          <div class="media-tile__name">${m.name}</div>
+          
         </button>
       `;
     }).join('');
@@ -149,7 +149,7 @@
 
     // Clear stage
     stage.innerHTML = '';
-    meta.textContent = item.name || '';
+    meta.textContent = '';
 
     if(item.type === 'video'){
       const v = document.createElement('video');
