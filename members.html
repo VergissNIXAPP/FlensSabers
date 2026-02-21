@@ -39,7 +39,6 @@
       <h1 class="member-hero__title">Willkommen auf der Dunklen Seite FlensSabers Mitglied!</h1>
       <p class="member-hero__sub">
         Hier kannst du bald intern alles Wichtige finden – und schon jetzt Merch bestellen.
-        <strong>Produkte sind Platzhalter</strong> (du kannst Namen, Preise, Bilder & Varianten später easy im Code anpassen).
       </p>
       <div class="cta" style="margin-top:14px;">
         <a class="btn btn--ghost" href="index.html">← Zurück zur Homepage</a>
@@ -50,7 +49,7 @@
     <section class="section" id="shop">
       <div class="section__head">
         <h2>FlensSabers Merch (intern)</h2>
-        <p>Wähle deine Artikel – wir erstellen daraus eine Bestell‑E‑Mail. (Später kannst du hier auch ein richtiges Shop‑System anschließen.)</p>
+        <p>Wähle deine Artikel und gebe danach deine Daten ein.</p>
       </div>
 
       <div class="shop">
@@ -209,50 +208,54 @@
 
     // --- Simple merch placeholders + cart -> mailto ---
     (function(){
-      const PRODUCTS = [
-        {
-          id: 'tee',
-          name: 'FlensSabers T‑Shirt',
-          meta: 'Platzhalter • Unisex • Größen: S–XXL',
-          price: 'XX,XX €',
-          img: 'images/shop/tee.png'
-        },
+  const PRODUCTS = [
+  {
+    id: 'tee',
+    name: 'FlensSabers T-Shirt',
+    meta: 'Black • Unisex • Größen: S–XXL',
+    price: '22,00 €',
+    images: [
+      'images/shop/tee-front.png',
+      'images/shop/tee-back.png'
+    ]
+  },
         {
           id: 'hoodie',
-          name: 'FlensSabers Hoodie',
-          meta: 'Platzhalter • Premium • Größen: S–XXL',
-          price: 'XX,XX €',
-          img: 'images/shop/hoodie.png'
+          name: 'FlensSabers Kaputzen Hoodie',
+          meta: 'Black • Premium • Größen: S–XXL',
+          price: '28,00 €',
+           images: [
+      'images/shop/khoddie-front.png',
+      'images/shop/khoodie-back.png'
         },
         {
-          id: 'cap',
-          name: 'FlensSabers Cap',
-          meta: 'Platzhalter • One‑Size • Stick',
-          price: 'XX,XX €',
-          img: 'images/shop/cap.png'
-        },
-        {
-          id: 'crew',
+         id: 'hoodie',
           name: 'FlensSabers Pullover',
-          meta: 'Platzhalter • Crewneck • Größen: S–XXL',
-          price: 'XX,XX €',
-          img: 'images/shop/crewneck.png'
+          meta: 'Black • Premium • Größen: S–XXL',
+          price: '26,00 €',
+           images: [
+      'images/shop/pl-front.png',
+      'images/shop/pl-back.png'
         },
         {
-          id: 'patch',
-          name: 'FlensSabers Patch',
-          meta: 'Platzhalter • Klett/Zum Aufnähen',
-          price: 'XX,XX €',
-          img: 'images/shop/patch.png'
+          id: 'tee',
+    name: 'FlensSabers Poloshirt',
+    meta: 'Black • Unisex • Größen: S–XXL',
+    price: '24,00 €',
+    images: [
+      'images/shop/polo-front.png',
+      'images/shop/polo-back.png'
         },
         {
-          id: 'bottle',
-          name: 'FlensSabers Bottle',
-          meta: 'Platzhalter • 0,7L • Training ready',
-          price: 'XX,XX €',
-          img: 'images/shop/bottle.png'
-        }
-      ];
+            id: 'hoodie',
+          name: 'FlensSabers Jacke',
+          meta: 'Black • Premium • Größen: S–XXL',
+          price: '29,00 €',
+           images: [
+      'images/shop/pl-front.png',
+      'images/shop/pl-back.png'
+        },
+ 
 
       const grid = document.getElementById('shopGrid');
       const cartEmpty = document.getElementById('cartEmpty');
