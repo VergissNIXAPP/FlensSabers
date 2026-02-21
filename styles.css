@@ -673,6 +673,26 @@ a{ color:inherit; }
   font-weight: 700;
   letter-spacing: .3px;
 }
+
+select{
+  width: 100%;
+  padding: 14px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(0,0,0,.30);
+  color: rgba(234,240,255,.95);
+  outline: none;
+  font-weight: 700;
+  letter-spacing: .3px;
+}
+
+select:focus{
+  box-shadow: 0 0 0 2px rgba(255,255,255,.10), 0 22px 70px rgba(0,0,0,.45);
+}
+.size-select{
+  min-width: 140px;
+  flex: 1 1 140px;
+}
 .gate__input:focus{ box-shadow: 0 0 0 2px rgba(255,255,255,.10), 0 22px 70px rgba(0,0,0,.45); }
 .gate__row{ display:flex; gap: 10px; flex-wrap: wrap; margin-top: 2px; }
 .gate__btn{ min-width: 140px; }

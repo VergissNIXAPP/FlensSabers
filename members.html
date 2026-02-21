@@ -116,12 +116,12 @@
   // --- Simple merch placeholders + cart -> EmailJS ---
   (function () {
     const PRODUCTS = [
-      { id: 'tee',     name: 'FlensSabers T-Shirt',           meta: 'Black • Unisex • Größen: S–XXL',  price: '22,00 €', images: ['images/shop/tee-front.png', 'images/shop/tee-back.png'] },
-      { id: 'hoodie',  name: 'FlensSabers Kapuzen Hoodie',    meta: 'Black • Unisex • Größen: S–XXL', price: '28,00 €', images: ['images/shop/khoodie-front.png', 'images/shop/khoodie-back.png'] },
-      { id: 'pullover',name: 'FlensSabers Pullover',          meta: 'Black • Unisex • Größen: S–XXL', price: '26,00 €', images: ['images/shop/pl-front.png', 'images/shop/pl-back.png'] },
-      { id: 'polo',    name: 'FlensSabers Poloshirt',         meta: 'Black • Unisex • Größen: S–XXL',  price: '24,00 €', images: ['images/shop/polo-front.png', 'images/shop/polo-back.png'] },
-      { id: 'jacket',  name: 'FlensSabers Jacke',             meta: 'Black • Unisex • Größen: S–XXL', price: '29,00 €', images: ['images/shop/jk-front.png', 'images/shop/jk-back.png'] },
-            { id: 'Cap',  name: 'FlensSabers Cap',             meta: 'Black • Unisex • Größen: S–XL', price: '24,00 €', images: ['images/shop/cap-front.png'] },
+      { id: 'tee',     name: 'FlensSabers T-Shirt',           meta: 'Black • Unisex •',  price: '22,00 €', images: ['images/shop/tee-front.png', 'images/shop/tee-back.png'] },
+      { id: 'hoodie',  name: 'FlensSabers Kapuzen Hoodie',    meta: 'Black • Unisex •', price: '28,00 €', images: ['images/shop/khoodie-front.png', 'images/shop/khoodie-back.png'] },
+      { id: 'pullover',name: 'FlensSabers Pullover',          meta: 'Black • Unisex •', price: '26,00 €', images: ['images/shop/pl-front.png', 'images/shop/pl-back.png'] },
+      { id: 'polo',    name: 'FlensSabers Poloshirt',         meta: 'Black • Unisex •',  price: '24,00 €', images: ['images/shop/polo-front.png', 'images/shop/polo-back.png'] },
+      { id: 'jacket',  name: 'FlensSabers Jacke',             meta: 'Black • Unisex •', price: '29,00 €', images: ['images/shop/jk-front.png', 'images/shop/jk-back.png'] },
+            { id: 'Cap',  name: 'FlensSabers Cap',            meta: 'Black • Unisex •', price: '24,00 €', images: ['images/shop/cap-front.png'] },
     ];
 
     const grid      = document.getElementById('shopGrid');
@@ -136,7 +136,7 @@
     const emailEl   = document.getElementById('buyerEmail');
     const codeEl    = document.getElementById('buyerCode');
 
-    const cart = new Map(); // id -> {p, qty}
+    const cart = new Map(); // key -> {p, size, qty}  (key = `${id}__${size}`)
 
     const renderGrid = () => {
       grid.innerHTML = PRODUCTS.map(p => {
@@ -150,7 +150,15 @@
             <div class="product__body">
               <h3 class="product__name">${p.name}</h3>
               <p class="product__meta">${p.meta}</p>
-              <div class="product__row">
+              <div class="product__row" style="gap:10px; flex-wrap:wrap;">
+                <select class="size-select" data-size-for="${p.id}" aria-label="Größe wählen" required>
+                  <option value="" selected disabled>Größe wählen</option>
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+                </select>
                 <span class="pill">Preis: ${p.price}</span>
                 <button class="btn btn--primary" type="button" data-add="${p.id}">+ In den Warenkorb</button>
               </div>
@@ -161,55 +169,66 @@
     };
 
     const renderCart = () => {
-      const items = [...cart.values()];
+      const items = [...cart.entries()].map(([key, v]) => ({ key, ...v }));
       cartEmpty.style.display = items.length ? 'none' : 'block';
-      cartList.innerHTML = items.map(({p, qty}) => `
+      cartList.innerHTML = items.map(({key, p, size, qty}) => `
         <li class="cart__item">
           <div>
             <strong>${p.name}</strong>
-            <small>${p.price} • ${p.meta}</small>
+            <small>${p.price}${size ? ` • Größe: ${size}` : ''}${p.meta ? ` • ${p.meta}` : ''}</small>
           </div>
           <div style="display:flex; gap:8px; align-items:center;">
-            <button class="btn btn--ghost" type="button" data-dec="${p.id}" aria-label="minus">−</button>
+            <button class="btn btn--ghost" type="button" data-dec="${key}" aria-label="minus">−</button>
             <strong>${qty}</strong>
-            <button class="btn btn--ghost" type="button" data-inc="${p.id}" aria-label="plus">+</button>
+            <button class="btn btn--ghost" type="button" data-inc="${key}" aria-label="plus">+</button>
           </div>
         </li>
       `).join('');
     };
 
-    const add = (id) => {
+    const add = (id, size) => {
       const p = PRODUCTS.find(x => x.id === id);
       if (!p) return;
-      const entry = cart.get(id);
-      cart.set(id, { p, qty: (entry?.qty || 0) + 1 });
-      renderCart();
-    };
-    const inc = (id) => add(id);
-    const dec = (id) => {
-      const entry = cart.get(id);
-      if (!entry) return;
-      const next = entry.qty - 1;
-      if (next <= 0) cart.delete(id);
-      else cart.set(id, { p: entry.p, qty: next });
+
+      const chosen = (size || '').trim();
+      if (!chosen) return;
+
+      const key = `${id}__${chosen}`;
+      const entry = cart.get(key);
+      cart.set(key, { p, size: chosen, qty: (entry?.qty || 0) + 1 });
       renderCart();
     };
 
+    const inc = (key) => {
+      const entry = cart.get(key);
+      if (!entry) return;
+      cart.set(key, { ...entry, qty: entry.qty + 1 });
+      renderCart();
+    };
+
+    const dec = (key) => {
+      const entry = cart.get(key);
+      if (!entry) return;
+      const next = entry.qty - 1;
+      if (next <= 0) cart.delete(key);
+      else cart.set(key, { ...entry, qty: next });
+      renderCart();
+    };
     const buildOrder = () => {
-      const items = [...cart.values()];
+      const items = [...cart.entries()].map(([key, v]) => ({ key, ...v }));
       if (!items.length) return null;
 
       const lines = [];
-      items.forEach(({p, qty}) => {
-        lines.push(`- ${qty}x ${p.name} — ${p.price}`);
+      items.forEach(({p, size, qty}) => {
+        lines.push(`- ${qty}x ${p.name}${size ? ` (Größe: ${size})` : ''} — ${p.price}`);
         if (p.meta) lines.push(`  Details: ${p.meta}`);
       });
 
       return {
         items,
         order_text: lines.join('\n'),
-        order_items_json: JSON.stringify(items.map(({p, qty}) => ({
-          id: p.id, name: p.name, meta: p.meta, price: p.price, qty
+        order_items_json: JSON.stringify(items.map(({p, size, qty}) => ({
+          id: p.id, name: p.name, size, meta: p.meta, price: p.price, qty
         })))
       };
     };
@@ -220,7 +239,16 @@
     grid.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-add]');
       if (!btn) return;
-      add(btn.getAttribute('data-add'));
+      const id = btn.getAttribute('data-add');
+      const card = btn.closest('.product');
+      const sel = card ? card.querySelector(`[data-size-for="${id}"]`) : null;
+      const size = sel ? sel.value : '';
+      if (!size) {
+        alert('Bitte zuerst eine Größe auswählen (S–XXL).');
+        if (sel) sel.focus();
+        return;
+      }
+      add(id, size);
     });
 
     cartList.addEventListener('click', (e) => {
