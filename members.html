@@ -11,6 +11,25 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="styles.css" rel="stylesheet"/>
+
+<style>
+.dark-side {
+    color: #000;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 8px;
+    background: linear-gradient(145deg, #000000, #1a1a1a);
+    box-shadow: 
+        0 0 15px rgba(0,0,0,0.8),
+        0 0 30px rgba(255,0,0,0.4);
+    text-shadow: 
+        0 0 5px rgba(255,0,0,0.7),
+        0 0 15px rgba(255,0,0,0.6);
+}
+</style>
+
 </head>
 <body>
 <div class="bg">
@@ -35,7 +54,7 @@
 <main class="wrap" id="top">
 <section class="member-hero">
 <div class="kicker">Mitgliederbereich • FlensSabers</div>
-<h1 class="member-hero__title">Willkommen auf der Dunklen Seite FlensSabers Mitglied!</h1>
+<h1 class="member-hero__title">Willkommen auf der <span class="dark-side">Dunklen Seite</span> FlensSabers Mitglied!</h1>
 <p class="member-hero__sub">
         Hier kannst du bald intern alles Wichtige finden – und schon jetzt Merch bestellen.<br>
         <strong>Die ersten Produkte sind ONLINE!</strong> 
@@ -144,6 +163,8 @@
           <img class="product__img" src="${src}" alt="${p.name} ${i === 0 ? 'Vorderseite' : 'Rückseite'}" loading="lazy" />
         `).join('');
 
+        const inCart = [...cart.keys()].some(k => k.startsWith(p.id + "__"));
+
         return `
           <article class="product" data-id="${p.id}">
             <div class="product__imgs">${imgs}</div>
@@ -160,7 +181,7 @@
                   <option value="XXL">XXL</option>
                 </select>
                 <span class="pill">Preis: ${p.price}</span>
-                <button class="btn btn--primary" type="button" data-add="${p.id}">+ In den Warenkorb</button>
+                <button class="btn ${inCart ? 'btn--added' : 'btn--primary'}" type="button" data-add="${p.id}">${inCart ? '✓ Im Warenkorb' : '+ In den Warenkorb'}</button>
               </div>
             </div>
           </article>
@@ -197,6 +218,7 @@
       const entry = cart.get(key);
       cart.set(key, { p, size: chosen, qty: (entry?.qty || 0) + 1 });
       renderCart();
+      renderGrid();
     };
 
     const inc = (key) => {
@@ -204,6 +226,7 @@
       if (!entry) return;
       cart.set(key, { ...entry, qty: entry.qty + 1 });
       renderCart();
+      renderGrid();
     };
 
     const dec = (key) => {
@@ -213,6 +236,7 @@
       if (next <= 0) cart.delete(key);
       else cart.set(key, { ...entry, qty: next });
       renderCart();
+      renderGrid();
     };
     const buildOrder = () => {
       const items = [...cart.entries()].map(([key, v]) => ({ key, ...v }));
@@ -261,6 +285,7 @@
     clearBtn.addEventListener('click', () => {
       cart.clear();
       renderCart();
+      renderGrid();
     });
 
     // Send order via EmailJS

@@ -171,6 +171,11 @@ a{ color:inherit; }
 .btn--primary{
   background: linear-gradient(90deg, rgba(52,255,207,.22), rgba(117,80,255,.24));
 }
+
+.btn--added{
+  background: linear-gradient(90deg, rgba(80,255,120,.28), rgba(52,255,207,.30));
+  border-color: rgba(80,255,120,.35);
+}
 .btn--ghost{
   background: rgba(255,255,255,.06);
 }
