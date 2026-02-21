@@ -206,43 +206,44 @@
       if(!isAuthed()) openGate();
     })();
 
+
 // --- Simple merch placeholders + cart -> mailto ---
-(function(){
+(function () {
   const PRODUCTS = [
     {
       id: 'tee',
       name: 'FlensSabers T-Shirt',
       meta: 'Black • Unisex • Größen: S–XXL',
       price: '22,00 €',
-      images: ['images/shop/tee-front.png','images/shop/tee-back.png']
+      images: ['images/shop/tee-front.png', 'images/shop/tee-back.png']
     },
     {
       id: 'hoodie',
       name: 'FlensSabers Kapuzen Hoodie',
       meta: 'Black • Premium • Größen: S–XXL',
       price: '28,00 €',
-      images: ['images/shop/khoodie-front.png','images/shop/khoodie-back.png']
+      images: ['images/shop/khoodie-front.png', 'images/shop/khoodie-back.png']
     },
     {
       id: 'pullover',
       name: 'FlensSabers Pullover',
       meta: 'Black • Premium • Größen: S–XXL',
       price: '26,00 €',
-      images: ['images/shop/pl-front.png','images/shop/pl-back.png']
+      images: ['images/shop/pl-front.png', 'images/shop/pl-back.png']
     },
     {
       id: 'polo',
       name: 'FlensSabers Poloshirt',
       meta: 'Black • Unisex • Größen: S–XXL',
       price: '24,00 €',
-      images: ['images/shop/polo-front.png','images/shop/polo-back.png']
+      images: ['images/shop/polo-front.png', 'images/shop/polo-back.png']
     },
     {
       id: 'jacket',
       name: 'FlensSabers Jacke',
       meta: 'Black • Premium • Größen: S–XXL',
       price: '29,00 €',
-      images: ['images/shop/jk-front.png','images/shop/jk-back.png']
+      images: ['images/shop/jk-front.png', 'images/shop/jk-back.png']
     }
   ];
 
@@ -254,22 +255,15 @@
 
   const cart = new Map(); // id -> {p, qty}
 
-  const normImages = (p) => {
-    if(Array.isArray(p.images) && p.images.length) return p.images;
-    if(p.img) return [p.img];
-    return [];
-  };
-
   const renderGrid = () => {
     grid.innerHTML = PRODUCTS.map(p => {
-      const imgs = normImages(p).slice(0,2).map(src => `
-        <img class="product__img" src="${src}" alt="${p.name}" loading="lazy" />
+      const imgs = (p.images || []).slice(0, 2).map((src, i) => `
+        <img class="product__img" src="${src}" alt="${p.name} ${i === 0 ? 'Vorderseite' : 'Rückseite'}" loading="lazy" />
       `).join('');
-      const imgBlock = imgs ? `<div class="product__imgs">${imgs}</div>` : '';
 
       return `
         <article class="product" data-id="${p.id}">
-          ${imgBlock}
+          <div class="product__imgs">${imgs}</div>
           <div class="product__body">
             <h3 class="product__name">${p.name}</h3>
             <p class="product__meta">${p.meta}</p>
@@ -342,8 +336,7 @@
     lines.push('Danke & Grüße');
     return {
       subject: 'FlensSabers Merch Bestellung',
-      body: lines.join('
-')
+      body: lines.join('\n')
     };
   };
 
@@ -379,6 +372,7 @@
   });
 })();
 
-</script>
+;
+  </script>
 </body>
 </html>
