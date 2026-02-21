@@ -206,174 +206,179 @@
       if(!isAuthed()) openGate();
     })();
 
+// --- Simple merch placeholders + cart -> mailto ---
+(function(){
+  const PRODUCTS = [
+    {
+      id: 'tee',
+      name: 'FlensSabers T-Shirt',
+      meta: 'Black • Unisex • Größen: S–XXL',
+      price: '22,00 €',
+      images: ['images/shop/tee-front.png','images/shop/tee-back.png']
+    },
+    {
+      id: 'hoodie',
+      name: 'FlensSabers Kapuzen Hoodie',
+      meta: 'Black • Premium • Größen: S–XXL',
+      price: '28,00 €',
+      images: ['images/shop/khoodie-front.png','images/shop/khoodie-back.png']
+    },
+    {
+      id: 'pullover',
+      name: 'FlensSabers Pullover',
+      meta: 'Black • Premium • Größen: S–XXL',
+      price: '26,00 €',
+      images: ['images/shop/pl-front.png','images/shop/pl-back.png']
+    },
+    {
+      id: 'polo',
+      name: 'FlensSabers Poloshirt',
+      meta: 'Black • Unisex • Größen: S–XXL',
+      price: '24,00 €',
+      images: ['images/shop/polo-front.png','images/shop/polo-back.png']
+    },
+    {
+      id: 'jacket',
+      name: 'FlensSabers Jacke',
+      meta: 'Black • Premium • Größen: S–XXL',
+      price: '29,00 €',
+      images: ['images/shop/jk-front.png','images/shop/jk-back.png']
+    }
+  ];
 
-    // --- Simple merch placeholders + cart -> mailto ---
-    (function(){
-      const PRODUCTS = [
-        {
-          id: 'tee',
-          name: 'FlensSabers T‑Shirt',
-          meta: 'Platzhalter • Unisex • Größen: S–XXL',
-          price: 'XX,XX €',
-          img: 'images/shop/tee.png'
-        },
-        {
-          id: 'hoodie',
-          name: 'FlensSabers Hoodie',
-          meta: 'Platzhalter • Premium • Größen: S–XXL',
-          price: 'XX,XX €',
-          img: 'images/shop/hoodie.png'
-        },
-        {
-          id: 'cap',
-          name: 'FlensSabers Cap',
-          meta: 'Platzhalter • One‑Size • Stick',
-          price: 'XX,XX €',
-          img: 'images/shop/cap.png'
-        },
-        {
-          id: 'crew',
-          name: 'FlensSabers Pullover',
-          meta: 'Platzhalter • Crewneck • Größen: S–XXL',
-          price: 'XX,XX €',
-          img: 'images/shop/crewneck.png'
-        },
-        {
-          id: 'patch',
-          name: 'FlensSabers Patch',
-          meta: 'Platzhalter • Klett/Zum Aufnähen',
-          price: 'XX,XX €',
-          img: 'images/shop/patch.png'
-        },
-        {
-          id: 'bottle',
-          name: 'FlensSabers Bottle',
-          meta: 'Platzhalter • 0,7L • Training ready',
-          price: 'XX,XX €',
-          img: 'images/shop/bottle.png'
-        }
-      ];
+  const grid = document.getElementById('shopGrid');
+  const cartEmpty = document.getElementById('cartEmpty');
+  const cartList = document.getElementById('cartList');
+  const sendBtn = document.getElementById('sendOrder');
+  const clearBtn = document.getElementById('clearCart');
 
-      const grid = document.getElementById('shopGrid');
-      const cartEmpty = document.getElementById('cartEmpty');
-      const cartList = document.getElementById('cartList');
-      const sendBtn = document.getElementById('sendOrder');
-      const clearBtn = document.getElementById('clearCart');
+  const cart = new Map(); // id -> {p, qty}
 
-      const cart = new Map(); // id -> {p, qty}
+  const normImages = (p) => {
+    if(Array.isArray(p.images) && p.images.length) return p.images;
+    if(p.img) return [p.img];
+    return [];
+  };
 
-      const renderGrid = () => {
-        grid.innerHTML = PRODUCTS.map(p => {
-          return `
-            <article class="product" data-id="${p.id}">
-              <img class="product__img" src="${p.img}" alt="${p.name}" loading="lazy" />
-              <div class="product__body">
-                <h3 class="product__name">${p.name}</h3>
-                <p class="product__meta">${p.meta}</p>
-                <div class="product__row">
-                  <span class="pill">Preis: ${p.price}</span>
-                  <button class="btn btn--primary" type="button" data-add="${p.id}">+ In den Warenkorb</button>
-                </div>
-              </div>
-            </article>
-          `;
-        }).join('');
-      };
+  const renderGrid = () => {
+    grid.innerHTML = PRODUCTS.map(p => {
+      const imgs = normImages(p).slice(0,2).map(src => `
+        <img class="product__img" src="${src}" alt="${p.name}" loading="lazy" />
+      `).join('');
+      const imgBlock = imgs ? `<div class="product__imgs">${imgs}</div>` : '';
 
-      const renderCart = () => {
-        const items = [...cart.values()];
-        cartEmpty.style.display = items.length ? 'none' : 'block';
-        cartList.innerHTML = items.map(({p, qty}) => {
-          return `
-            <li class="cart__item">
-              <div>
-                <strong>${p.name}</strong>
-                <small>${p.price} • ${p.meta}</small>
-              </div>
-              <div style="display:flex; gap:8px; align-items:center;">
-                <button class="btn btn--ghost" type="button" data-dec="${p.id}" aria-label="minus">−</button>
-                <strong>${qty}</strong>
-                <button class="btn btn--ghost" type="button" data-inc="${p.id}" aria-label="plus">+</button>
-              </div>
-            </li>
-          `;
-        }).join('');
-      };
+      return `
+        <article class="product" data-id="${p.id}">
+          ${imgBlock}
+          <div class="product__body">
+            <h3 class="product__name">${p.name}</h3>
+            <p class="product__meta">${p.meta}</p>
+            <div class="product__row">
+              <span class="pill">Preis: ${p.price}</span>
+              <button class="btn btn--primary" type="button" data-add="${p.id}">+ In den Warenkorb</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+  };
 
-      const add = (id) => {
-        const p = PRODUCTS.find(x => x.id === id);
-        if(!p) return;
-        const entry = cart.get(id);
-        cart.set(id, { p, qty: (entry?.qty || 0) + 1 });
-        renderCart();
-      };
-      const inc = (id) => add(id);
-      const dec = (id) => {
-        const entry = cart.get(id);
-        if(!entry) return;
-        const next = entry.qty - 1;
-        if(next <= 0) cart.delete(id);
-        else cart.set(id, { p: entry.p, qty: next });
-        renderCart();
-      };
+  const renderCart = () => {
+    const items = [...cart.values()];
+    cartEmpty.style.display = items.length ? 'none' : 'block';
+    cartList.innerHTML = items.map(({p, qty}) => {
+      return `
+        <li class="cart__item">
+          <div>
+            <strong>${p.name}</strong>
+            <small>${p.price} • ${p.meta}</small>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button class="btn btn--ghost" type="button" data-dec="${p.id}" aria-label="minus">−</button>
+            <strong>${qty}</strong>
+            <button class="btn btn--ghost" type="button" data-inc="${p.id}" aria-label="plus">+</button>
+          </div>
+        </li>
+      `;
+    }).join('');
+  };
 
-      const buildMail = () => {
-        const items = [...cart.values()];
-        if(!items.length) return null;
-        const lines = [];
-        lines.push('Moin FlensSabers,');
-        lines.push('');
-        lines.push('ich möchte folgenden Merch bestellen (Mitgliederbereich):');
-        lines.push('');
-        items.forEach(({p, qty}) => {
-          lines.push(`- ${qty}x ${p.name} | ${p.price}`);
-          lines.push(`  Details: ${p.meta}`);
-        });
-        lines.push('');
-        lines.push('Bitte Rückfrage zu Größen/Farben/Abholung/Bezahlung stellen.');
-        lines.push('');
-        lines.push('Name:');
-        lines.push('Telefon:');
-        lines.push('Größen/Farben:');
-        lines.push('');
-        lines.push('Danke & Grüße');
-        return {
-          subject: 'FlensSabers Merch Bestellung',
-          body: lines.join('\n')
-        };
-      };
+  const add = (id) => {
+    const p = PRODUCTS.find(x => x.id === id);
+    if(!p) return;
+    const entry = cart.get(id);
+    cart.set(id, { p, qty: (entry?.qty || 0) + 1 });
+    renderCart();
+  };
+  const inc = (id) => add(id);
+  const dec = (id) => {
+    const entry = cart.get(id);
+    if(!entry) return;
+    const next = entry.qty - 1;
+    if(next <= 0) cart.delete(id);
+    else cart.set(id, { p: entry.p, qty: next });
+    renderCart();
+  };
 
-      renderGrid();
-      renderCart();
+  const buildMail = () => {
+    const items = [...cart.values()];
+    if(!items.length) return null;
+    const lines = [];
+    lines.push('Moin FlensSabers,');
+    lines.push('');
+    lines.push('ich möchte folgenden Merch bestellen (Mitgliederbereich):');
+    lines.push('');
+    items.forEach(({p, qty}) => {
+      lines.push(`- ${qty}x ${p.name} | ${p.price}`);
+      lines.push(`  Details: ${p.meta}`);
+    });
+    lines.push('');
+    lines.push('Bitte Rückfrage zu Größen/Farben/Abholung/Bezahlung stellen.');
+    lines.push('');
+    lines.push('Name:');
+    lines.push('Telefon:');
+    lines.push('Größen/Farben:');
+    lines.push('');
+    lines.push('Danke & Grüße');
+    return {
+      subject: 'FlensSabers Merch Bestellung',
+      body: lines.join('
+')
+    };
+  };
 
-      grid.addEventListener('click', (e) => {
-        const btn = e.target.closest('[data-add]');
-        if(!btn) return;
-        add(btn.getAttribute('data-add'));
-      });
+  renderGrid();
+  renderCart();
 
-      cartList.addEventListener('click', (e) => {
-        const incBtn = e.target.closest('[data-inc]');
-        const decBtn = e.target.closest('[data-dec]');
-        if(incBtn) return inc(incBtn.getAttribute('data-inc'));
-        if(decBtn) return dec(decBtn.getAttribute('data-dec'));
-      });
+  grid.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-add]');
+    if(!btn) return;
+    add(btn.getAttribute('data-add'));
+  });
 
-      clearBtn.addEventListener('click', () => {
-        cart.clear();
-        renderCart();
-      });
+  cartList.addEventListener('click', (e) => {
+    const incBtn = e.target.closest('[data-inc]');
+    const decBtn = e.target.closest('[data-dec]');
+    if(incBtn) return inc(incBtn.getAttribute('data-inc'));
+    if(decBtn) return dec(decBtn.getAttribute('data-dec'));
+  });
 
-      sendBtn.addEventListener('click', () => {
-        const mail = buildMail();
-        if(!mail){
-          alert('Warenkorb ist leer.');
-          return;
-        }
-        const href = `mailto:mail@flenssabers.de?subject=${encodeURIComponent(mail.subject)}&body=${encodeURIComponent(mail.body)}`;
-        window.location.href = href;
-      });
-    })();
-  </script>
+  clearBtn.addEventListener('click', () => {
+    cart.clear();
+    renderCart();
+  });
+
+  sendBtn.addEventListener('click', () => {
+    const mail = buildMail();
+    if(!mail){
+      alert('Warenkorb ist leer.');
+      return;
+    }
+    const href = `mailto:mail@flenssabers.de?subject=${encodeURIComponent(mail.subject)}&body=${encodeURIComponent(mail.body)}`;
+    window.location.href = href;
+  });
+})();
+
+</script>
 </body>
 </html>
