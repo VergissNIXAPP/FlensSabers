@@ -39,6 +39,17 @@
 </div>
 </header>
 <main class="wrap" id="top">
+
+<!-- Top Intro Video (Portrait) -->
+<section class="top-video" id="topIntro">
+  <div class="top-video__wrap">
+    <button class="top-video__close" type="button" aria-label="Video schließen" data-topvideo-close>×</button>
+    <video id="topIntroVideo" class="top-video__video" playsinline autoplay muted controls preload="auto">
+      <source src="videos/intro.mp4" type="video/mp4" />
+    </video>
+  </div>
+</section>
+
 <section class="hero">
 <div class="hero__copy">
 <div class="kicker">Laserschwertsport • Flensburg</div>
@@ -170,19 +181,7 @@
 </footer>
 </main>
 
-<!-- Intro-Video (zeigt sich beim ersten Besuch) -->
-<div class="video-modal" id="introModal" aria-hidden="true">
-  <div class="video-modal__backdrop" data-close></div>
-  <div class="video-modal__panel" role="dialog" aria-modal="true" aria-label="FlensSabers Intro Video">
-    <button class="video-modal__close" type="button" aria-label="Video schließen" data-close>×</button>
-    <div class="video-modal__frame">
-      <video id="introVideo" class="video-modal__video" playsinline preload="auto" controls>
-        <source src="videos/intro.mp4" type="video/mp4" />
-      </video>
-    </div>
-    <div class="video-modal__hint">Tipp: Du kannst das Video jederzeit schließen.</div>
-  </div>
-</div>
+
 <script>
     // tiny cinema touches
     document.getElementById('y').textContent = new Date().getFullYear();
@@ -198,50 +197,37 @@
     };
     window.addEventListener('mousemove', onMove, { passive: true });
 
-    // Intro video modal (first visit)
+    
+  
+    // Top intro video (autoplay on every visit, closeable)
     (function(){
-      const KEY = 'flenssabers_intro_seen_v1';
-      const modal = document.getElementById('introModal');
-      const video = document.getElementById('introVideo');
-      if(!modal || !video) return;
+      const wrap = document.getElementById('topIntro');
+      const video = document.getElementById('topIntroVideo');
+      if(!wrap || !video) return;
 
-      const open = () => {
-        modal.classList.add('is-open');
-        modal.setAttribute('aria-hidden', 'false');
-        // Attempt autoplay (some browsers require muted)
-        const tryPlay = async () => {
-          try{ await video.play(); }
-          catch(e){
-            video.muted = true;
-            try{ await video.play(); }catch(_){ /* ignore */ }
-          }
-        };
-        tryPlay();
-      };
-
+      const closeBtn = wrap.querySelector('[data-topvideo-close]');
       const close = () => {
-        modal.classList.remove('is-open');
-        modal.setAttribute('aria-hidden', 'true');
-        try{ video.pause(); video.currentTime = 0; }catch(_){ }
-        try{ localStorage.setItem(KEY, '1'); }catch(_){ }
+        try{ video.pause(); video.currentTime = 0; }catch(_){}
+        wrap.style.display = 'none';
       };
+      closeBtn && closeBtn.addEventListener('click', close);
 
-      modal.addEventListener('click', (e) => {
-        const el = e.target;
-        if(el && el.closest && el.closest('[data-close]')) close();
-      });
-      window.addEventListener('keydown', (e) => {
-        if(e.key === 'Escape' && modal.classList.contains('is-open')) close();
-      });
-
-      // Show only on first visit
-      let seen = false;
-      try{ seen = localStorage.getItem(KEY) === '1'; }catch(_){ seen = false; }
-      if(!seen){
-        // small delay so layout is ready
-        window.addEventListener('load', () => setTimeout(open, 280), { once:true });
-      }
+      // Try autoplay (muted for mobile compatibility)
+      const tryPlay = async () => {
+        try{
+          video.muted = true;
+          await video.play();
+        }catch(e){
+          // Autoplay might be blocked; user can press play via controls.
+        }
+      };
+      window.addEventListener('load', () => {
+        // restart from beginning each time
+        try{ video.currentTime = 0; }catch(_){}
+        tryPlay();
+      }, { once:true });
     })();
+
   </script>
 </body>
 </html>
