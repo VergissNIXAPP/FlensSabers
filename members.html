@@ -62,13 +62,43 @@
           <h3>Warenkorb</h3>
           <p class="cart__empty" id="cartEmpty">Noch leer – füge links Produkte hinzu.</p>
           <ul class="cart__list" id="cartList"></ul>
-          <div class="cart__row">
-            <button class="btn btn--primary" type="button" id="sendOrder">Bestellung senden</button>
-            <button class="btn btn--ghost" type="button" id="clearCart">Leeren</button>
+          
+          <div class="checkout" aria-label="Bestellung abschließen">
+            <h4 class="checkout__title">Bestellung abschließen</h4>
+            <p class="checkout__sub">Bitte echte Daten eintragen. Zum Absenden wird der interne <strong>Passcode</strong> benötigt.</p>
+
+            <div class="checkout__grid">
+              <div class="field">
+                <label class="field__label" for="buyerFirst">Vorname</label>
+                <input class="field__input" id="buyerFirst" type="text" autocomplete="given-name" placeholder="z.B. Max" />
+              </div>
+              <div class="field">
+                <label class="field__label" for="buyerLast">Nachname</label>
+                <input class="field__input" id="buyerLast" type="text" autocomplete="family-name" placeholder="z.B. Mustermann" />
+              </div>
+              <div class="field field--full">
+                <label class="field__label" for="buyerEmail">E‑Mail</label>
+                <input class="field__input" id="buyerEmail" type="email" autocomplete="email" inputmode="email" placeholder="name@domain.de" />
+              </div>
+              <div class="field field--full">
+                <label class="field__label" for="buyerPasscode">Passcode</label>
+                <input class="field__input" id="buyerPasscode" type="password" inputmode="text" placeholder="fs" />
+                <div class="field__hint">Tipp: Passcode = <strong>fs</strong></div>
+              </div>
+            </div>
+
+            <div class="checkout__row">
+              <button class="btn btn--primary" type="button" id="sendOrder">Bestellung senden</button>
+              <button class="btn btn--ghost" type="button" id="clearCart">Leeren</button>
+            </div>
+
+            <div class="checkout__status" id="orderStatus" aria-live="polite"></div>
           </div>
+
           <p class="fineprint" style="margin:10px 0 0;">
-            Hinweis: Das ist ein einfacher Mail‑Workflow. Ohne Server ist das nur „leicht versteckt“.
+            Hinweis: Ohne Server ist das nur „leicht versteckt“. Das Absenden läuft über EmailJS.
           </p>
+
         </aside>
       </div>
     </section>
@@ -107,6 +137,8 @@
       </form>
     </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
@@ -314,30 +346,21 @@
     renderCart();
   };
 
-  const buildMail = () => {
+  
+  const buildOrderText = () => {
     const items = [...cart.values()];
     if(!items.length) return null;
+
     const lines = [];
-    lines.push('Moin FlensSabers,');
-    lines.push('');
-    lines.push('ich möchte folgenden Merch bestellen (Mitgliederbereich):');
+    lines.push('Bestellung (Mitgliederbereich):');
     lines.push('');
     items.forEach(({p, qty}) => {
       lines.push(`- ${qty}x ${p.name} | ${p.price}`);
       lines.push(`  Details: ${p.meta}`);
     });
-    lines.push('');
-    lines.push('Bitte Rückfrage zu Größen/Farben/Abholung/Bezahlung stellen.');
-    lines.push('');
-    lines.push('Name:');
-    lines.push('Telefon:');
-    lines.push('Größen/Farben:');
-    lines.push('');
-    lines.push('Danke & Grüße');
-    return {
-      subject: 'FlensSabers Merch Bestellung',
-      body: lines.join('\n')
-    };
+    return lines.join('
+');
+  };
   };
 
   renderGrid();
@@ -361,15 +384,100 @@
     renderCart();
   });
 
-  sendBtn.addEventListener('click', () => {
-    const mail = buildMail();
-    if(!mail){
+  
+  // --- EmailJS order sending ---
+  // IMPORTANT: Fill these two values from your EmailJS dashboard:
+  const EMAILJS_SERVICE_ID = 'service_1jpmsmw';
+  const EMAILJS_TEMPLATE_ID = 'template_1sbpjui';
+  const EMAILJS_PUBLIC_KEY  = 'QNxPPXY-0C74tuHzP';
+
+  // Init EmailJS (safe no-op if not filled)
+  try{
+    if(EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'REPLACE_WITH_PUBLIC_KEY'){
+      emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    }
+  }catch(_){}
+
+  const statusEl = document.getElementById('orderStatus');
+  const setStatus = (msg, ok=true) => {
+    if(!statusEl) return;
+    statusEl.textContent = msg || '';
+    statusEl.classList.toggle('is-error', !ok);
+    statusEl.classList.toggle('is-ok', !!ok);
+  };
+
+  const getBuyer = () => {
+    const first = (document.getElementById('buyerFirst')?.value || '').trim();
+    const last  = (document.getElementById('buyerLast')?.value || '').trim();
+    const email = (document.getElementById('buyerEmail')?.value || '').trim();
+    const code  = (document.getElementById('buyerPasscode')?.value || '').trim();
+    return { first, last, email, code };
+  };
+
+  const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+  sendBtn.addEventListener('click', async () => {
+    setStatus('');
+
+    const orderText = buildOrderText();
+    if(!orderText){
       alert('Warenkorb ist leer.');
       return;
     }
-    const href = `mailto:mail@flenssabers.de?subject=${encodeURIComponent(mail.subject)}&body=${encodeURIComponent(mail.body)}`;
-    window.location.href = href;
+
+    const { first, last, email, code } = getBuyer();
+    if(!first || !last || !email){
+      setStatus('Bitte Vorname, Nachname und E‑Mail ausfüllen.', false);
+      return;
+    }
+    if(!isEmail(email)){
+      setStatus('Bitte eine gültige E‑Mail-Adresse eingeben.', false);
+      return;
+    }
+    if((code || '').toLowerCase() !== 'fs'){
+      setStatus('Falscher Passcode.', false);
+      return;
+    }
+
+    if(EMAILJS_TEMPLATE_ID === 'REPLACE_WITH_TEMPLATE_ID' || EMAILJS_PUBLIC_KEY === 'REPLACE_WITH_PUBLIC_KEY'){
+      setStatus('EmailJS ist noch nicht vollständig eingerichtet (Template ID / Public Key fehlt).', false);
+      return;
+    }
+
+    // Prepare template params
+    const items = [...cart.values()].map(({p, qty}) => ({
+      id: p.id, name: p.name, meta: p.meta, price: p.price, qty
+    }));
+
+    const params = {
+      buyer_first: first,
+      buyer_last: last,
+      buyer_email: email,
+      order_text: orderText,
+      order_items_json: JSON.stringify(items, null, 2)
+    };
+
+    try{
+      sendBtn.disabled = true;
+      setStatus('Sende Bestellung…', true);
+
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
+
+      setStatus('Bestellung gesendet! ✅', true);
+      cart.clear();
+      renderCart();
+      // clear fields
+      try{
+        document.getElementById('buyerPasscode').value = '';
+      }catch(_){}
+    }catch(err){
+      console.error(err);
+      setStatus('Fehler beim Senden. Bitte später nochmal versuchen.', false);
+    }finally{
+      sendBtn.disabled = false;
+    }
   });
+
 })();
 
 ;
