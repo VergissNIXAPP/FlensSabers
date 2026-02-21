@@ -1,389 +1,259 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FlensSabers – Mitgliederbereich</title>
-  <meta name="robots" content="noindex,nofollow" />
-  <link rel="icon" href="images/logo.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div class="bg">
-    <div aria-hidden="true" class="bg__image"></div>
-    <div aria-hidden="true" class="bg__vignette"></div>
-    <div aria-hidden="true" class="bg__grain"></div>
-    <div aria-hidden="true" class="bg__sweep"></div>
-  </div>
+<script>
+  document.getElementById('y').textContent = new Date().getFullYear();
 
-  <header class="topbar">
-    <div class="topbar__inner">
-      <a class="brand" href="index.html" aria-label="Zurück zur Startseite">
-        <img class="brand__logo" src="images/logo.png" alt="FlensSabers Logo" />
-        <span class="brand__text">FlensSabers</span>
-      </a>
-      <nav class="nav">
-        <a href="index.html#training">Training</a>
-        <a href="index.html#join">Mitmachen</a>
-        <a class="nav__ig" href="https://www.instagram.com/flenssabers/" target="_blank" rel="noreferrer noopener">Instagram</a>
-      </nav>
-    </div>
-  </header>
+  // --- Gate protection (client-side) ---
+  (function(){
+    const gate = document.getElementById('memberGate');
+    const form = document.getElementById('memberGateForm');
+    const pass = document.getElementById('memberPass');
+    const err = document.getElementById('gateError');
 
-  <main class="wrap" id="top">
-    <section class="member-hero">
-      <div class="kicker">Mitgliederbereich • FlensSabers</div>
-      <h1 class="member-hero__title">Willkommen auf der Dunklen Seite FlensSabers Mitglied!</h1>
-      <p class="member-hero__sub">
-        Hier kannst du bald intern alles Wichtige finden – und schon jetzt Merch bestellen.
-      </p>
-      <div class="cta" style="margin-top:14px;">
-        <a class="btn btn--ghost" href="index.html">← Zurück zur Homepage</a>
-        <a class="btn btn--primary" href="#shop">🛒 Zum Merch</a>
-      </div>
-    </section>
+    const openGate = () => {
+      gate.classList.add('is-open');
+      gate.setAttribute('aria-hidden','false');
+      err.textContent = '';
+      pass.value = '';
+      setTimeout(() => pass.focus(), 50);
+    };
+    const closeGate = () => {
+      gate.classList.remove('is-open');
+      gate.setAttribute('aria-hidden','true');
+    };
 
-    <section class="section" id="shop">
-      <div class="section__head">
-        <h2>FlensSabers Merch (intern)</h2>
-        <p>Wähle deine Artikel und gebe danach deine Daten ein.</p>
-      </div>
+    const isAuthed = () => {
+      try{ return sessionStorage.getItem('fs_member') === '1'; }catch(_){ return false; }
+    };
 
-      <div class="shop">
-        <div>
-          <div class="shop-grid" id="shopGrid"></div>
-        </div>
+    gate.querySelectorAll('[data-gate-close]').forEach(el => el.addEventListener('click', () => {
+      if(!isAuthed()) window.location.href = 'index.html';
+      else closeGate();
+    }));
 
-        <aside class="cart" aria-label="Warenkorb">
-          <h3>Warenkorb</h3>
-          <p class="cart__empty" id="cartEmpty">Noch leer – füge links Produkte hinzu.</p>
-          <ul class="cart__list" id="cartList"></ul>
-          <div class="cart__row">
-            <button class="btn btn--primary" type="button" id="sendOrder">Bestellung senden</button>
-            <button class="btn btn--ghost" type="button" id="clearCart">Leeren</button>
-          </div>
-          <p class="fineprint" style="margin:10px 0 0;">
-            Hinweis: Das ist ein einfacher Mail‑Workflow. Ohne Server ist das nur „leicht versteckt“.
-          </p>
-        </aside>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="footer__inner">
-        <a href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">Instagram</a>
-        <a class="psv-badge" href="https://www.psv-flensburg.de/" rel="noreferrer noopener" target="_blank">
-          <img alt="PSV Logo" class="psv-badge__logo" src="images/psv.png" />
-          <span class="psv-badge__text">Mitglied des Sportvereins</span>
-        </a>
-        <span>© <span id="y"></span> FlensSabers</span>
-      </div>
-    </footer>
-  </main>
-
-  <!-- Gate (also protects direct access to members.html) -->
-  <div class="gate" id="memberGate" aria-hidden="true">
-    <div class="gate__backdrop" data-gate-close></div>
-    <div class="gate__panel" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
-      <button class="gate__close" type="button" aria-label="Schließen" data-gate-close>×</button>
-      <div class="gate__head">
-        <div class="gate__badge">Mitglieder Login</div>
-        <h2 id="gateTitle">FlensSabers – Mitgliederbereich</h2>
-        <p class="gate__sub">Gib das Passwort ein, um fortzufahren.</p>
-      </div>
-      <form class="gate__form" id="memberGateForm" autocomplete="off">
-        <label class="gate__label" for="memberPass">Passwort</label>
-        <input class="gate__input" id="memberPass" type="password" inputmode="text" placeholder="••••••••" />
-        <div class="gate__row">
-          <button class="btn btn--primary gate__btn" type="submit">Einloggen</button>
-          <a class="btn btn--ghost gate__btn" href="index.html">Zur Startseite</a>
-        </div>
-        <div class="gate__error" id="gateError" aria-live="polite"></div>
-        <div class="gate__hint">Tipp: Öffnen mit <strong>6× Tippen</strong> auf das <strong>Logo</strong>.</div>
-      </form>
-    </div>
-  </div>
-
-  <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
-
-    // --- Gate protection (client-side) ---
-    (function(){
-      const gate = document.getElementById('memberGate');
-      const form = document.getElementById('memberGateForm');
-      const pass = document.getElementById('memberPass');
-      const err = document.getElementById('gateError');
-
-      const openGate = () => {
-        gate.classList.add('is-open');
-        gate.setAttribute('aria-hidden','false');
-        err.textContent = '';
-        pass.value = '';
-        setTimeout(() => pass.focus(), 50);
-      };
-      const closeGate = () => {
-        gate.classList.remove('is-open');
-        gate.setAttribute('aria-hidden','true');
-      };
-
-      const isAuthed = () => {
-        try{ return sessionStorage.getItem('fs_member') === '1'; }catch(_){ return false; }
-      };
-
-      gate.querySelectorAll('[data-gate-close]').forEach(el => el.addEventListener('click', () => {
-        // On members page, closing without auth -> go home
+    window.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape' && gate.classList.contains('is-open')){
         if(!isAuthed()) window.location.href = 'index.html';
         else closeGate();
-      }));
+      }
+    });
 
-      window.addEventListener('keydown', (e) => {
-        if(e.key === 'Escape' && gate.classList.contains('is-open')){
-          if(!isAuthed()) window.location.href = 'index.html';
-          else closeGate();
+    function attachMultiTap(el, tapsRequired, onDone){
+      if(!el) return;
+      let taps = 0;
+      let timer = null;
+      let lastTouchLike = 0;
+
+      const reset = () => {
+        taps = 0;
+        if(timer){ clearTimeout(timer); timer = null; }
+      };
+
+      const bump = (src) => {
+        const now = Date.now();
+        if(src === 'click' && (now - lastTouchLike) < 450) return;
+        if(src !== 'click') lastTouchLike = now;
+
+        taps += 1;
+        if(timer) clearTimeout(timer);
+        timer = setTimeout(reset, 1100);
+
+        if(taps >= tapsRequired){
+          reset();
+          onDone && onDone();
         }
-      });
+      };
 
-      // 6x tap on logo to open gate (useful if gate is closed while authed)
-      function attachMultiTap(el, tapsRequired, onDone){
-        if(!el) return;
-        let taps = 0;
-        let timer = null;
-        let lastTouchLike = 0;
-
-        const reset = () => {
-          taps = 0;
-          if(timer){ clearTimeout(timer); timer = null; }
-        };
-
-        const bump = (src) => {
-          const now = Date.now();
-          if(src === 'click' && (now - lastTouchLike) < 450) return;
-          if(src !== 'click') lastTouchLike = now;
-
-          taps += 1;
-          if(timer) clearTimeout(timer);
-          timer = setTimeout(reset, 1100);
-
-          if(taps >= tapsRequired){
-            reset();
-            onDone && onDone();
-          }
-        };
-
-        if(window.PointerEvent){
-          el.addEventListener('pointerup', (e) => {
-            if(e.isPrimary === false) return;
-            bump('pointer');
-          }, { passive:true });
-        } else {
-          el.addEventListener('touchend', () => bump('touch'), { passive:true });
-          el.addEventListener('mouseup',  () => bump('mouse'),  { passive:true });
-        }
-
-        el.addEventListener('click', () => bump('click'), { passive:true });
+      if(window.PointerEvent){
+        el.addEventListener('pointerup', (e) => {
+          if(e.isPrimary === false) return;
+          bump('pointer');
+        }, { passive:true });
+      } else {
+        el.addEventListener('touchend', () => bump('touch'), { passive:true });
+        el.addEventListener('mouseup',  () => bump('mouse'),  { passive:true });
       }
 
-      const headerLogo = document.querySelector('.brand__logo') || document.querySelector('.brand');
-      attachMultiTap(headerLogo, 6, openGate);
-
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const val = (pass.value || '').trim();
-        if(val === 'DarkSide'){
-          try{ sessionStorage.setItem('fs_member', '1'); }catch(_){ }
-          closeGate();
-          return;
-        }
-        err.textContent = 'Falsches Passwort. Versuch’s nochmal.';
-        pass.focus();
-        pass.select();
-      });
-
-      if(!isAuthed()) openGate();
-    })();
-
-
-    // --- Simple merch placeholders + cart -> mailto ---
-    // --- Simple merch placeholders + cart -> mailto ---
-(function () {
-  const PRODUCTS = [
-    {
-      id: 'tee',
-      name: 'FlensSabers T-Shirt',
-      meta: 'Black • Unisex • Größen: S–XXL',
-      price: '22,00 €',
-      images: [
-        'images/shop/tee-front.png',
-        'images/shop/tee-back.png'
-      ]
-    },
-    {
-      id: 'hoodie',
-      name: 'FlensSabers Kapuzen Hoodie',
-      meta: 'Black • Premium • Größen: S–XXL',
-      price: '28,00 €',
-      images: [
-        'images/shop/khoodie-front.png',
-        'images/shop/khoodie-back.png'
-      ]
-    },
-    {
-      id: 'pullover',
-      name: 'FlensSabers Pullover',
-      meta: 'Black • Premium • Größen: S–XXL',
-      price: '26,00 €',
-      images: [
-        'images/shop/pl-front.png',
-        'images/shop/pl-back.png'
-      ]
-    },
-    {
-      id: 'polo',
-      name: 'FlensSabers Poloshirt',
-      meta: 'Black • Unisex • Größen: S–XXL',
-      price: '24,00 €',
-      images: [
-        'images/shop/polo-front.png',
-        'images/shop/polo-back.png'
-      ]
-    },
-    {
-      id: 'jacket',
-      name: 'FlensSabers Jacke',
-      meta: 'Black • Premium • Größen: S–XXL',
-      price: '29,00 €',
-      images: [
-        'images/shop/jk-front.png',
-        'images/shop/jk-back.png'
-      ]
+      el.addEventListener('click', () => bump('click'), { passive:true });
     }
-  ];
 
-  const grid = document.getElementById('shopGrid');
-  const cartEmpty = document.getElementById('cartEmpty');
-  const cartList = document.getElementById('cartList');
-  const sendBtn = document.getElementById('sendOrder');
-  const clearBtn = document.getElementById('clearCart');
+    const headerLogo = document.querySelector('.brand__logo') || document.querySelector('.brand');
+    attachMultiTap(headerLogo, 6, openGate);
 
-  // ... dein restlicher Code (rendern, cart, mailto, etc.) kommt hier hin ...
-})();
-      const cart = new Map(); // id -> {p, qty}
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = (pass.value || '').trim();
+      if(val === 'DarkSide'){
+        try{ sessionStorage.setItem('fs_member', '1'); }catch(_){ }
+        closeGate();
+        return;
+      }
+      err.textContent = 'Falsches Passwort. Versuch’s nochmal.';
+      pass.focus();
+      pass.select();
+    });
 
-      const renderGrid = () => {
-        grid.innerHTML = PRODUCTS.map(p => {
-          return `
-            <article class="product" data-id="${p.id}">
-              <img class="product__img" src="${p.img}" alt="${p.name}" loading="lazy" />
-              <div class="product__body">
-                <h3 class="product__name">${p.name}</h3>
-                <p class="product__meta">${p.meta}</p>
-                <div class="product__row">
-                  <span class="pill">Preis: ${p.price}</span>
-                  <button class="btn btn--primary" type="button" data-add="${p.id}">+ In den Warenkorb</button>
-                </div>
+    if(!isAuthed()) openGate();
+  })();
+
+  // --- Simple merch placeholders + cart -> mailto ---
+  (function () {
+    const PRODUCTS = [
+      {
+        id: 'tee',
+        name: 'FlensSabers T-Shirt',
+        meta: 'Black • Unisex • Größen: S–XXL',
+        price: '22,00 €',
+        images: ['images/shop/tee-front.png', 'images/shop/tee-back.png']
+      },
+      {
+        id: 'hoodie',
+        name: 'FlensSabers Kapuzen Hoodie',
+        meta: 'Black • Premium • Größen: S–XXL',
+        price: '28,00 €',
+        images: ['images/shop/khoodie-front.png', 'images/shop/khoodie-back.png']
+      },
+      {
+        id: 'pullover',
+        name: 'FlensSabers Pullover',
+        meta: 'Black • Premium • Größen: S–XXL',
+        price: '26,00 €',
+        images: ['images/shop/pl-front.png', 'images/shop/pl-back.png']
+      },
+      {
+        id: 'polo',
+        name: 'FlensSabers Poloshirt',
+        meta: 'Black • Unisex • Größen: S–XXL',
+        price: '24,00 €',
+        images: ['images/shop/polo-front.png', 'images/shop/polo-back.png']
+      },
+      {
+        id: 'jacket',
+        name: 'FlensSabers Jacke',
+        meta: 'Black • Premium • Größen: S–XXL',
+        price: '29,00 €',
+        images: ['images/shop/jk-front.png', 'images/shop/jk-back.png']
+      }
+    ];
+
+    const grid = document.getElementById('shopGrid');
+    const cartEmpty = document.getElementById('cartEmpty');
+    const cartList = document.getElementById('cartList');
+    const sendBtn = document.getElementById('sendOrder');
+    const clearBtn = document.getElementById('clearCart');
+
+    const cart = new Map(); // id -> {p, qty}
+
+    const renderGrid = () => {
+      grid.innerHTML = PRODUCTS.map(p => {
+        const imgs = (p.images || []).slice(0, 2).map(src => `
+          <img class="product__img" src="${src}" alt="${p.name}" loading="lazy" />
+        `).join('');
+
+        return `
+          <article class="product" data-id="${p.id}">
+            <div class="product__imgs">${imgs}</div>
+            <div class="product__body">
+              <h3 class="product__name">${p.name}</h3>
+              <p class="product__meta">${p.meta}</p>
+              <div class="product__row">
+                <span class="pill">Preis: ${p.price}</span>
+                <button class="btn btn--primary" type="button" data-add="${p.id}">+ In den Warenkorb</button>
               </div>
-            </article>
-          `;
-        }).join('');
-      };
+            </div>
+          </article>
+        `;
+      }).join('');
+    };
 
-      const renderCart = () => {
-        const items = [...cart.values()];
-        cartEmpty.style.display = items.length ? 'none' : 'block';
-        cartList.innerHTML = items.map(({p, qty}) => {
-          return `
-            <li class="cart__item">
-              <div>
-                <strong>${p.name}</strong>
-                <small>${p.price} • ${p.meta}</small>
-              </div>
-              <div style="display:flex; gap:8px; align-items:center;">
-                <button class="btn btn--ghost" type="button" data-dec="${p.id}" aria-label="minus">−</button>
-                <strong>${qty}</strong>
-                <button class="btn btn--ghost" type="button" data-inc="${p.id}" aria-label="plus">+</button>
-              </div>
-            </li>
-          `;
-        }).join('');
-      };
+    const renderCart = () => {
+      const items = [...cart.values()];
+      cartEmpty.style.display = items.length ? 'none' : 'block';
+      cartList.innerHTML = items.map(({p, qty}) => `
+        <li class="cart__item">
+          <div>
+            <strong>${p.name}</strong>
+            <small>${p.price} • ${p.meta}</small>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button class="btn btn--ghost" type="button" data-dec="${p.id}" aria-label="minus">−</button>
+            <strong>${qty}</strong>
+            <button class="btn btn--ghost" type="button" data-inc="${p.id}" aria-label="plus">+</button>
+          </div>
+        </li>
+      `).join('');
+    };
 
-      const add = (id) => {
-        const p = PRODUCTS.find(x => x.id === id);
-        if(!p) return;
-        const entry = cart.get(id);
-        cart.set(id, { p, qty: (entry?.qty || 0) + 1 });
-        renderCart();
-      };
-      const inc = (id) => add(id);
-      const dec = (id) => {
-        const entry = cart.get(id);
-        if(!entry) return;
-        const next = entry.qty - 1;
-        if(next <= 0) cart.delete(id);
-        else cart.set(id, { p: entry.p, qty: next });
-        renderCart();
-      };
-
-      const buildMail = () => {
-        const items = [...cart.values()];
-        if(!items.length) return null;
-        const lines = [];
-        lines.push('Moin FlensSabers,');
-        lines.push('');
-        lines.push('ich möchte folgenden Merch bestellen (Mitgliederbereich):');
-        lines.push('');
-        items.forEach(({p, qty}) => {
-          lines.push(`- ${qty}x ${p.name} | ${p.price}`);
-          lines.push(`  Details: ${p.meta}`);
-        });
-        lines.push('');
-        lines.push('Bitte Rückfrage zu Größen/Farben/Abholung/Bezahlung stellen.');
-        lines.push('');
-        lines.push('Name:');
-        lines.push('Telefon:');
-        lines.push('Größen/Farben:');
-        lines.push('');
-        lines.push('Danke & Grüße');
-        return {
-          subject: 'FlensSabers Merch Bestellung',
-          body: lines.join('\n')
-        };
-      };
-
-      renderGrid();
+    const add = (id) => {
+      const p = PRODUCTS.find(x => x.id === id);
+      if(!p) return;
+      const entry = cart.get(id);
+      cart.set(id, { p, qty: (entry?.qty || 0) + 1 });
       renderCart();
+    };
+    const inc = (id) => add(id);
+    const dec = (id) => {
+      const entry = cart.get(id);
+      if(!entry) return;
+      const next = entry.qty - 1;
+      if(next <= 0) cart.delete(id);
+      else cart.set(id, { p: entry.p, qty: next });
+      renderCart();
+    };
 
-      grid.addEventListener('click', (e) => {
-        const btn = e.target.closest('[data-add]');
-        if(!btn) return;
-        add(btn.getAttribute('data-add'));
+    const buildMail = () => {
+      const items = [...cart.values()];
+      if(!items.length) return null;
+      const lines = [
+        'Moin FlensSabers,',
+        '',
+        'ich möchte folgenden Merch bestellen (Mitgliederbereich):',
+        ''
+      ];
+      items.forEach(({p, qty}) => {
+        lines.push(`- ${qty}x ${p.name} | ${p.price}`);
+        lines.push(`  Details: ${p.meta}`);
       });
+      lines.push(
+        '',
+        'Bitte Rückfrage zu Größen/Farben/Abholung/Bezahlung stellen.',
+        '',
+        'Name:',
+        'Telefon:',
+        'Größen/Farben:',
+        '',
+        'Danke & Grüße'
+      );
+      return { subject: 'FlensSabers Merch Bestellung', body: lines.join('\n') };
+    };
 
-      cartList.addEventListener('click', (e) => {
-        const incBtn = e.target.closest('[data-inc]');
-        const decBtn = e.target.closest('[data-dec]');
-        if(incBtn) return inc(incBtn.getAttribute('data-inc'));
-        if(decBtn) return dec(decBtn.getAttribute('data-dec'));
-      });
+    renderGrid();
+    renderCart();
 
-      clearBtn.addEventListener('click', () => {
-        cart.clear();
-        renderCart();
-      });
+    grid.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-add]');
+      if(!btn) return;
+      add(btn.getAttribute('data-add'));
+    });
 
-      sendBtn.addEventListener('click', () => {
-        const mail = buildMail();
-        if(!mail){
-          alert('Warenkorb ist leer.');
-          return;
-        }
-        const href = `mailto:mail@flenssabers.de?subject=${encodeURIComponent(mail.subject)}&body=${encodeURIComponent(mail.body)}`;
-        window.location.href = href;
-      });
-    })();
-  </script>
-</body>
-</html>
+    cartList.addEventListener('click', (e) => {
+      const incBtn = e.target.closest('[data-inc]');
+      const decBtn = e.target.closest('[data-dec]');
+      if(incBtn) return inc(incBtn.getAttribute('data-inc'));
+      if(decBtn) return dec(decBtn.getAttribute('data-dec'));
+    });
+
+    clearBtn.addEventListener('click', () => {
+      cart.clear();
+      renderCart();
+    });
+
+    sendBtn.addEventListener('click', () => {
+      const mail = buildMail();
+      if(!mail){
+        alert('Warenkorb ist leer.');
+        return;
+      }
+      window.location.href =
+        `mailto:mail@flenssabers.de?subject=${encodeURIComponent(mail.subject)}&body=${encodeURIComponent(mail.body)}`;
+    });
+  })();
+</script>
