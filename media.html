@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>FlensSabers – Media</title>
+  <meta content="Bilder & Clips der FlensSabers" name="description"/>
+  <link href="images/logo.png" rel="icon"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+  <link href="styles.css" rel="stylesheet"/>
+</head>
+
+<body>
+  <div class="bg">
+    <div aria-hidden="true" class="bg__image"></div>
+    <div aria-hidden="true" class="bg__vignette"></div>
+    <div aria-hidden="true" class="bg__grain"></div>
+    <div aria-hidden="true" class="bg__sweep"></div>
+  </div>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a aria-label="FlensSabers Start" class="brand" href="index.html">
+        <img alt="FlensSabers Logo" class="brand__logo" src="images/logo.png"/>
+        <span class="brand__text">FlensSabers</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html#about">Über uns</a>
+        <a href="index.html#training">Training</a>
+        <a class="is-active" href="media.html">Media</a>
+        <a href="index.html#join">Mitmachen</a>
+        <a aria-label="FlensSabers auf Instagram" class="nav__ig" href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">Instagram</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap" id="top">
+    <section class="section">
+      <div class="section__head">
+        <h2>Media</h2>
+        <p>Bilder &amp; Clips – automatisch aus unserem GitHub <code>/media</code>-Ordner. Tippen/Klicken zum Vergrößern.</p>
+      </div>
+
+      <div class="media-wall" aria-label="Media Galerie">
+        <div class="media-wall__grid media-wall__grid--full" id="mediaGrid" aria-live="polite">
+          <div class="media-wall__loading">Lade Media…</div>
+        </div>
+      </div>
+
+      <div class="lightbox" id="lightbox" aria-hidden="true">
+        <div class="lightbox__backdrop" data-lightbox-close></div>
+        <div class="lightbox__panel" role="dialog" aria-modal="true" aria-label="Media Viewer">
+          <button class="lightbox__close" type="button" aria-label="Schließen" data-lightbox-close>×</button>
+          <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Zurück" data-lightbox-prev>‹</button>
+          <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Weiter" data-lightbox-next>›</button>
+          <div class="lightbox__stage" id="lightboxStage"></div>
+          <div class="lightbox__meta" id="lightboxMeta"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer__inner">
+        <a href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">Instagram</a>
+        <span>© <span id="y"></span> FlensSabers</span>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+  <script src="media.js"></script>
+</body>
+</html>

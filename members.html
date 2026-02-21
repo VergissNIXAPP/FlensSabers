@@ -12,6 +12,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="styles.css" rel="stylesheet"/>
 
+<!-- FullCalendar (Calendar UI) -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet"/>
+
 <style>
 .dark-side {
     color: #000;
@@ -32,6 +35,18 @@
 
 </head>
 <body>
+<script>
+  // Basic protection: members.html should only be reachable after login on index.html
+  (function(){
+    try{
+      if(sessionStorage.getItem('fs_member') !== '1'){
+        window.location.replace('index.html');
+      }
+    }catch(_){
+      // If storage is blocked, still allow access.
+    }
+  })();
+</script>
 <div class="bg">
 <div aria-hidden="true" class="bg__image"></div>
 <div aria-hidden="true" class="bg__vignette"></div>
@@ -63,6 +78,28 @@
 <a class="btn btn--ghost" href="index.html">← Zurück zur Homepage</a>
 <a class="btn btn--primary" href="#shop">🛒 Zum Merch</a>
 </div>
+</section>
+
+<!-- Events / Kalender -->
+<section class="section" id="events">
+  <div class="section__head">
+    <h2>Kalender – Bevorstehende Events</h2>
+    <p>Übersicht über unsere nächsten Auftritte, Termine &amp; Events.</p>
+  </div>
+
+  <div class="events-wrap">
+    <div class="events-cal">
+      <div id="fsCalendar"></div>
+    </div>
+
+    <aside class="events-side" aria-label="Nächste Termine">
+      <div class="events-upcoming">
+        <h3>Nächste Termine</h3>
+        <div id="upcomingList" class="events-upcoming__list"></div>
+      </div>
+
+    </aside>
+  </div>
 </section>
 <section class="section" id="shop">
 <div class="section__head">
@@ -120,7 +157,10 @@
 </main>
 <!-- Gate (also protects direct access to members.html) -->
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script><script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
   // Footer year
   document.getElementById('y').textContent = new Date().getFullYear();
 
@@ -345,6 +385,94 @@
         sendBtn.textContent = 'Bestellung senden';
       }
     });
+  })();
+</script>
+
+<script>
+  // -------------------- Events / Kalender (FullCalendar) --------------------
+  // 👉 Events bitte hier im Code pflegen:
+  // Format: { title, start, end?, extendedProps: { place?, note? } }
+  (function(){
+    const calEl = document.getElementById('fsCalendar');
+    if(!calEl || !window.FullCalendar) return;
+
+    const FS_EVENTS = [
+      {
+        title: 'Training – Rudeschule',
+        start: '2026-02-24T20:00:00',
+        end: '2026-02-24T22:00:00',
+        extendedProps: { place: 'Flensburg', note: 'Bitte 10 min vorher da sein.' }
+      },
+      {
+        title: 'Training – Gemeinschaftsschule West',
+        start: '2026-02-27T18:00:00',
+        end: '2026-02-27T21:00:00',
+        extendedProps: { place: 'Flensburg', note: 'Bitte 10 min vorher da sein.' }
+      },
+  
+    ];
+
+    function fmtDate(iso){
+      try {
+        return new Date(iso).toLocaleString('de-DE', { dateStyle:'medium', timeStyle:'short' });
+      } catch(e){ return iso; }
+    }
+
+    function renderUpcoming(events){
+      const listEl = document.getElementById('upcomingList');
+      if(!listEl) return;
+      const now = new Date();
+      const upcoming = (events || [])
+        .filter(ev => ev.start && new Date(ev.start) >= new Date(now.getTime() - 60*60*1000))
+        .sort((a,b)=> new Date(a.start) - new Date(b.start))
+        .slice(0, 10);
+
+      if(upcoming.length === 0){
+        listEl.innerHTML = '<div class="events-empty">Aktuell sind keine Termine eingetragen.</div>';
+        return;
+      }
+
+      listEl.innerHTML = upcoming.map(ev => {
+        const place = (ev.extendedProps && ev.extendedProps.place) ? ev.extendedProps.place : '';
+        const note  = (ev.extendedProps && ev.extendedProps.note) ? ev.extendedProps.note : '';
+        return `
+          <div class="events-item">
+            <div class="events-item__title">${ev.title || 'Event'}</div>
+            <div class="events-item__meta">
+              <span>${fmtDate(ev.start)}</span>${place ? ` • <span>${place}</span>` : ''}
+            </div>
+            ${note ? `<div class="events-item__note">${note}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    const calendar = new FullCalendar.Calendar(calEl, {
+      initialView: 'dayGridMonth',
+      height: 'auto',
+      locale: 'de',
+      firstDay: 1,
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,listMonth'
+      },
+      events: FS_EVENTS,
+      eventClick: function(info){
+        const ev = info.event;
+        const place = ev.extendedProps?.place ? `
+Ort: ${ev.extendedProps.place}` : '';
+        const note  = ev.extendedProps?.note  ? `
+Notiz: ${ev.extendedProps.note}` : '';
+        const end   = ev.end ? `
+Ende: ${fmtDate(ev.end)}` : '';
+        alert(`${ev.title}
+Start: ${fmtDate(ev.start)}${end}${place}${note}`);
+      }
+    });
+
+    calendar.render();
+    renderUpcoming(FS_EVENTS);
   })();
 </script>
 </body>
