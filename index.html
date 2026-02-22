@@ -28,10 +28,7 @@
 <img alt="FlensSabers Logo" class="brand__logo" src="images/logo.png"/>
 <span class="brand__text">FlensSabers</span>
 </a>
-<button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="siteNav" data-nav-toggle>
-        <span aria-hidden="true">☰</span>
-      </button>
-      <nav class="nav" id="siteNav">
+<nav class="nav">
 <a href="#about">Über uns</a>
 <a href="#training">Training</a>
 <a href="media.html">Media</a>
@@ -42,23 +39,19 @@
 </nav>
 </div>
 </header>
-<div class="nav-dim" data-nav-close aria-hidden="true"></div>
 <main class="wrap" id="top">
 
 <!-- Top Intro Video (Portrait) -->
-<section class="hero">
-  <!-- PSV HERO CENTER -->
-  <div class="psv-hero-center">
-    <a href="https://www.psv-flensburg.de/" target="_blank" class="psv-big-center">
-      <img src="images/psv.png" alt="PSV Flensburg Logo">
-      <div class="psv-text-center">
-        <div class="psv-sub">Offizielle Sparte des</div>
-        <div class="psv-main">Polizeisportverein Flensburg</div>
-      </div>
-    </a>
+<section class="top-video" id="topIntro">
+  <div class="top-video__wrap">
+    <button class="top-video__close" type="button" aria-label="Video schließen" data-topvideo-close>×</button>
+    <video id="topIntroVideo" class="top-video__video" playsinline autoplay muted controls preload="auto">
+      <source src="videos/intro.mp4" type="video/mp4" />
+    </video>
   </div>
 </section>
-  
+
+ 
 
 <section class="hero">
 <div class="hero__copy">
@@ -231,71 +224,34 @@
 
     
   
-    // Top intro video (with epilepsy warning + auto close)
+    // Top intro video (autoplay on every visit, closeable)
     (function(){
       const wrap = document.getElementById('topIntro');
       const video = document.getElementById('topIntroVideo');
-      const warn = wrap ? wrap.querySelector('.top-video__warning') : null;
       if(!wrap || !video) return;
 
       const closeBtn = wrap.querySelector('[data-topvideo-close]');
-      let playTimer = null;
-      let autoCloseTimer = null;
-      let warnHideTimer = null;
-
-      const clearTimers = () => {
-        if(playTimer){ clearTimeout(playTimer); playTimer = null; }
-        if(autoCloseTimer){ clearTimeout(autoCloseTimer); autoCloseTimer = null; }
-        if(warnHideTimer){ clearTimeout(warnHideTimer); warnHideTimer = null; }
-      };
-
       const close = () => {
-        clearTimers();
         try{ video.pause(); video.currentTime = 0; }catch(_){}
         wrap.style.display = 'none';
-        document.body.classList.remove('nav-open'); // just in case
       };
-
-      const showWarning = () => {
-        if(!warn) return;
-        warn.classList.add('is-show');
-        // hide warning after a moment (video continues)
-        warnHideTimer = setTimeout(() => {
-          warn.classList.remove('is-show');
-        }, 3800);
-      };
-
       closeBtn && closeBtn.addEventListener('click', close);
 
-      // ESC closes (nice on desktop)
-      window.addEventListener('keydown', (e) => {
-        if(e.key === 'Escape' && wrap.style.display !== 'none') close();
-      });
-
-      const startPlayback = async () => {
+      // Try autoplay (muted for mobile compatibility)
+      const tryPlay = async () => {
         try{
-          video.muted = true;          // mobile autoplay compatibility (still might be blocked)
-          video.playsInline = true;
+          video.muted = true;
           await video.play();
         }catch(e){
           // Autoplay might be blocked; user can press play via controls.
-        }finally{
-          // Auto close 10 seconds after we attempted to start playback
-          autoCloseTimer = setTimeout(close, 10000);
         }
       };
-
       window.addEventListener('load', () => {
-        // restart from beginning each visit
+        // restart from beginning each time
         try{ video.currentTime = 0; }catch(_){}
-        try{ video.pause(); }catch(_){}
-        showWarning();
-
-        // give users a brief heads-up before playback starts
-        playTimer = setTimeout(startPlayback, 2200);
+        tryPlay();
       }, { once:true });
     })();
-
 
   </script>
 
@@ -387,6 +343,5 @@
     })();
   </script>
 
-<script src="site.js"></script>
 </body>
 </html>
