@@ -106,6 +106,72 @@ a{ color:inherit; }
   box-shadow: 0 10px 24px rgba(0,0,0,.22);
 }
 
+
+/* Mobile nav toggle (hamburger) */
+.nav-toggle{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06);
+  color: rgba(234,240,255,.95);
+  cursor:pointer;
+  box-shadow: 0 14px 36px rgba(0,0,0,.30);
+  backdrop-filter: blur(10px);
+}
+.nav-toggle:hover{ transform: translateY(-1px); }
+
+.nav-dim{
+  display:none;
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,.62);
+  backdrop-filter: blur(6px);
+  z-index:4;
+}
+
+@media (max-width: 720px){
+  .nav-toggle{ display:inline-flex; }
+  .nav{
+    position: fixed;
+    top: 70px;
+    left: 12px;
+    right: 12px;
+    z-index: 6;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px;
+    border-radius: 20px;
+    border:1px solid rgba(255,255,255,.16);
+    background: rgba(0,0,0,.72);
+    box-shadow: 0 30px 90px rgba(0,0,0,.70);
+    transform: translateY(-10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .18s ease, opacity .18s ease;
+  }
+  .nav a{
+    width:100%;
+    padding: 12px 12px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.03);
+  }
+  .nav a:hover{ transform:none; }
+  .nav__ig{
+    text-align:center;
+    background: rgba(255,255,255,.08);
+  }
+
+  body.nav-open .nav{
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  body.nav-open .nav-dim{ display:block; }
+}
 .wrap{ max-width: 1120px; margin: 0 auto; padding: 18px 16px 44px; }
 
 .hero{
@@ -783,54 +849,6 @@ a{ color:inherit; }
   transition:.2s ease;
 }
 
-/* === TOP PORTRAIT VIDEO === */
-.top-video{
-  display:flex;
-  justify-content:center;
-  margin: 6px 0 18px;
-}
-
-.top-video__wrap{
-  width: min(420px, 92vw);
-  aspect-ratio: 9 / 16;
-  border-radius: 22px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.16);
-  box-shadow: 0 20px 70px rgba(0,0,0,.65);
-  background: rgba(0,0,0,.5);
-}
-
-.top-video__video{
-  width:100%;
-  height:100%;
-  object-fit: cover;
-}
-
-    
-/* Top video close button */
-.top-video__wrap{ position: relative; }
-
-.top-video__close{
-  position:absolute;
-  top: 10px;
-  right: 10px;
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.18);
-  background: rgba(0,0,0,.35);
-  color: rgba(234,240,255,.95);
-  font-size: 28px;
-  line-height: 1;
-  cursor: pointer;
-  z-index: 3;
-  box-shadow: 0 16px 40px rgba(0,0,0,.45);
-  backdrop-filter: blur(10px);
-}
-
-.top-video__close:hover{
-  transform: translateY(-1px);
-}
 
 
 /* === Secret Members Gate === */
@@ -1031,3 +1049,68 @@ select:focus{
 /* Hide media filenames and lightbox meta */
 .media-tile__name { display: none !important; }
 .lightbox__meta { display: none !important; }
+
+
+/* ===============================
+   PSV HERO BADGE
+=================================*/
+
+.psv-hero-wrapper{
+  /* span over both hero columns so it's centered on the whole hero width */
+  grid-column: 1 / -1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin: 14px 0 10px 0;
+}
+
+.psv-badge-hero{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:18px 28px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#0e2a1d,#134c34);
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+  text-decoration:none;
+  transition:all 0.3s ease;
+}
+
+.psv-badge-hero:hover{
+  transform:translateY(-3px);
+  box-shadow:0 14px 35px rgba(0,0,0,0.55);
+}
+
+.psv-badge-hero img{
+  width:70px;
+  height:70px;
+  object-fit:contain;
+}
+
+.psv-text{
+  display:flex;
+  flex-direction:column;
+  text-align:left;
+}
+
+.psv-sub{
+  font-size:13px;
+  opacity:0.8;
+}
+
+.psv-main{
+  font-size:20px;
+  font-weight:700;
+}
+
+@media (max-width:768px){
+  .psv-badge-hero{
+    flex-direction:column;
+    text-align:center;
+    gap:12px;
+  }
+
+  .psv-text{
+    text-align:center;
+  }
+}
