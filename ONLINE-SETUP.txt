@@ -1,0 +1,32 @@
+FlensSabers Live-Remote – Firebase-Version
+==========================================
+
+Diese ZIP ist bereits direkt mit deinem Firebase-Projekt verbunden.
+
+Aktiv:
+- Trainer-Fernbedienung: trainer.html
+- Passwort für die Trainer-Seite: admin
+- Live-Ticker auf members.html
+- Live-Kalender auf members.html
+- Speicherung und Live-Synchronisierung über Firebase Firestore
+
+Wichtig:
+- Änderungen auf trainer.html werden nach dem Speichern live auf members.html angezeigt.
+- Alle Geräte greifen auf dieselben Daten in Firestore zu.
+
+Empfohlene Firestore-Regeln (Beispiel – anpassen, wenn du später echten Login willst):
+--------------------------------------------------------------------------
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /flenssabers_live/{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+--------------------------------------------------------------------------
+
+Hinweis:
+Der Admin-Schutz mit Passwort 'admin' läuft im Frontend der Trainer-Seite.
+Das ist bequem, aber kein vollwertiger Hochsicherheits-Login. Wenn du später willst,
+kann ich dir dafür auch noch eine echte Firebase-Authentication-Version bauen.

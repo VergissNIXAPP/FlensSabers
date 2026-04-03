@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="de">
 <head>
 <meta charset="utf-8"/>
@@ -11,174 +10,176 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="styles.css" rel="stylesheet"/>
-
-<!-- FullCalendar (Calendar UI) -->
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet"/>
-
 <style>
 .dark-side {
-    color: #000;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 4px 12px;
-    border-radius: 8px;
-    background: linear-gradient(145deg, #000000, #1a1a1a);
-    box-shadow: 
-        0 0 15px rgba(0,0,0,0.8),
-        0 0 30px rgba(255,0,0,0.4);
-    text-shadow: 
-        0 0 5px rgba(255,0,0,0.7),
-        0 0 15px rgba(255,0,0,0.6);
+  color: #000;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #000000, #1a1a1a);
+  box-shadow: 0 0 15px rgba(0,0,0,0.8), 0 0 30px rgba(255,0,0,0.4);
+  text-shadow: 0 0 5px rgba(255,0,0,0.7), 0 0 15px rgba(255,0,0,0.6);
 }
 </style>
-
 </head>
 <body>
 <script>
-  // Basic protection: members.html should only be reachable after login on index.html
-  (function(){
-    try{
-      if(sessionStorage.getItem('fs_member') !== '1'){
-        window.location.replace('index.html');
-      }
-    }catch(_){
-      // If storage is blocked, still allow access.
+(function(){
+  try{
+    if(sessionStorage.getItem('fs_member') !== '1'){
+      window.location.replace('index.html');
     }
-  })();
+  }catch(_){ }
+})();
 </script>
 <div class="bg">
-<div aria-hidden="true" class="bg__image"></div>
-<div aria-hidden="true" class="bg__vignette"></div>
-<div aria-hidden="true" class="bg__grain"></div>
-<div aria-hidden="true" class="bg__sweep"></div>
+  <div aria-hidden="true" class="bg__image"></div>
+  <div aria-hidden="true" class="bg__vignette"></div>
+  <div aria-hidden="true" class="bg__grain"></div>
+  <div aria-hidden="true" class="bg__sweep"></div>
 </div>
 <header class="topbar">
-<div class="topbar__inner">
-<a aria-label="Zurück zur Startseite" class="brand" href="index.html">
-<img alt="FlensSabers Logo" class="brand__logo" src="images/logo.png"/>
-<span class="brand__text">FlensSabers</span>
-</a>
-<nav class="nav">
-<a href="index.html#training">Training</a>
-<a href="index.html#join">Mitmachen</a>
-<a class="nav__ig" href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">Instagram</a>
-</nav>
-</div>
-</header>
-<main class="wrap" id="top">
-<section class="member-hero">
-<div class="kicker">Mitgliederbereich • FlensSabers</div>
-<h1 class="member-hero__title">Willkommen auf der <span class="dark-side">Dunklen Seite</span> FlensSabers Mitglied!</h1>
-<p class="member-hero__sub">
-        Hier kannst du bald intern alles Wichtige finden – und schon jetzt Merch bestellen.<br>
-        <strong>Die ersten Produkte sind ONLINE!</strong> 
-      </p>
-<div class="cta" style="margin-top:14px;">
-<a class="btn btn--ghost" href="index.html">← Zurück zur Homepage</a>
-<a class="btn btn--primary" href="#shop">🛒 Zum Merch</a>
-</div>
-</section>
-
-<!-- Events / Kalender -->
-<section class="section" id="events">
-  <div class="section__head">
-    <h2>Kalender – Bevorstehende Events</h2>
-    <p>Übersicht über unsere nächsten Auftritte, Termine &amp; Events.</p>
+  <div class="topbar__inner">
+    <a aria-label="Zurück zur Startseite" class="brand" href="index.html">
+      <img alt="FlensSabers Logo" class="brand__logo" src="images/logo.png"/>
+      <span class="brand__text">FlensSabers</span>
+    </a>
+    <nav class="nav">
+      <a href="#liveTicker">Live-Ticker</a>
+      <a href="#events">Kalender</a>
+      <a href="#shop">Merch</a>
+      <a class="nav__ig" href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">Instagram</a>
+    </nav>
   </div>
+</header>
 
-  <div class="events-wrap">
-    <div class="events-cal">
-      <div id="fsCalendar"></div>
+<main class="wrap" id="top">
+  <section class="member-hero">
+    <div class="kicker">Mitgliederbereich • FlensSabers</div>
+    <h1 class="member-hero__title">Willkommen auf der <span class="dark-side">Dunklen Seite</span> FlensSabers Mitglied!</h1>
+    <p class="member-hero__sub">
+      Hier findest du interne Updates, Termine und unseren Merchbereich.<br/>
+      <strong>Live-Ticker und Kalender werden automatisch aktualisiert.</strong>
+    </p>
+    <div class="cta" style="margin-top:14px;">
+      <a class="btn btn--ghost" href="index.html">← Zurück zur Homepage</a>
+      <a class="btn btn--primary" href="#events">📅 Zum Kalender</a>
+    </div>
+  </section>
+
+  <section class="section live-strip-section" id="liveTicker">
+    <div class="live-strip" aria-live="polite">
+      <div class="live-strip__badge" id="tickerRailBadge">LIVE</div>
+      <div class="live-strip__text" id="tickerRailText">Lade Live-Informationen…</div>
+      <div class="live-strip__meta" id="liveStateMeta">Verbinde…</div>
     </div>
 
-    <aside class="events-side" aria-label="Nächste Termine">
-      <div class="events-upcoming">
-        <h3>Nächste Termine</h3>
-        <div id="upcomingList" class="events-upcoming__list"></div>
+    <div class="section__head section__head--compact">
+      <h2>Live-Ticker</h2>
+      <p id="liveTickerMeta">Wichtige Hinweise vom Trainerteam.</p>
+    </div>
+    <div class="ticker-grid" id="liveTickerList"></div>
+  </section>
+
+  <section class="section" id="events">
+    <div class="section__head">
+      <h2>Kalender – Bevorstehende Events</h2>
+      <p>Übersicht über unsere nächsten Auftritte, Termine &amp; Events.</p>
+    </div>
+
+    <div class="events-wrap">
+      <div class="events-cal">
+        <div id="fsCalendar"></div>
       </div>
 
-    </aside>
-  </div>
-</section>
-<section class="section" id="shop">
-<div class="section__head">
-<h2>FlensSabers Merch</h2>
-<p>Wähle deine Artikel – wir erstellen daraus eine Bestell‑E‑Mail.</p>
-</div>
-<div class="shop">
-<div>
-<div class="shop-grid" id="shopGrid"></div>
-</div>
-<aside aria-label="Warenkorb" class="cart">
-<h3>Warenkorb</h3>
-<p class="cart__empty" id="cartEmpty">Noch leer – füge links Produkte hinzu.</p>
-<ul class="cart__list" id="cartList"></ul>
-<div class="cart__row">
-<button class="btn btn--primary" id="sendOrder" type="button">Bestellung senden</button>
-<button class="btn btn--ghost" id="clearCart" type="button">Leeren</button>
-</div>
+      <aside class="events-side" aria-label="Nächste Termine">
+        <div class="events-upcoming">
+          <h3>Nächste Termine</h3>
+          <div id="upcomingList" class="events-upcoming__list"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
 
+  <section class="section" id="shop">
+    <div class="section__head">
+      <h2>FlensSabers Merch</h2>
+      <p>Wähle deine Artikel – wir erstellen daraus eine Bestell‑E‑Mail.</p>
+    </div>
+    <div class="shop">
+      <div>
+        <div class="shop-grid" id="shopGrid"></div>
+      </div>
+      <aside aria-label="Warenkorb" class="cart">
+        <h3>Warenkorb</h3>
+        <p class="cart__empty" id="cartEmpty">Noch leer – füge links Produkte hinzu.</p>
+        <ul class="cart__list" id="cartList"></ul>
+        <div class="cart__row">
+          <button class="btn btn--primary" id="sendOrder" type="button">Bestellung senden</button>
+          <button class="btn btn--ghost" id="clearCart" type="button">Leeren</button>
+        </div>
 
-<form autocomplete="on" class="orderform" id="orderForm" style="margin-top:14px;">
-<div class="field">
-<label for="buyerFirst">Vorname</label>
-<input id="buyerFirst" name="buyerFirst" placeholder="z.B. Max" required="" type="text"/>
-</div>
-<div class="field">
-<label for="buyerLast">Nachname</label>
-<input id="buyerLast" name="buyerLast" placeholder="z.B. Mustermann" required="" type="text"/>
-</div>
-<div class="field">
-<label for="buyerEmail">E-Mail</label>
-<input id="buyerEmail" name="buyerEmail" placeholder="name@domain.de" required="" type="email"/>
-</div>
-<div class="field">
-<label for="buyerCode">Passcode</label>
-<input id="buyerCode" name="buyerCode" placeholder="••••" required="" type="password"/>
-</div>
-<p class="fineprint" style="margin:10px 0 0;">
-    Die Bezahlung der Artikel erfolgt bei Abholung.
-  </p>
-</form>
-</aside>
-</div>
-</section>
-<footer class="footer">
-<div class="footer__inner">
-<a href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">Instagram</a>
-<a class="psv-badge" href="https://www.psv-flensburg.de/" rel="noreferrer noopener" target="_blank">
-<img alt="PSV Logo" class="psv-badge__logo" src="images/psv.png"/>
-<span class="psv-badge__text">Mitglied des Sportvereins</span>
-</a>
-<span>© <span id="y"></span> FlensSabers</span>
-</div>
-</footer>
+        <form autocomplete="on" class="orderform" id="orderForm" style="margin-top:14px;">
+          <div class="field">
+            <label for="buyerFirst">Vorname</label>
+            <input id="buyerFirst" name="buyerFirst" placeholder="z.B. Max" required="" type="text"/>
+          </div>
+          <div class="field">
+            <label for="buyerLast">Nachname</label>
+            <input id="buyerLast" name="buyerLast" placeholder="z.B. Mustermann" required="" type="text"/>
+          </div>
+          <div class="field">
+            <label for="buyerEmail">E-Mail</label>
+            <input id="buyerEmail" name="buyerEmail" placeholder="name@domain.de" required="" type="email"/>
+          </div>
+          <div class="field">
+            <label for="buyerCode">Passcode</label>
+            <input id="buyerCode" name="buyerCode" placeholder="••••" required="" type="password"/>
+          </div>
+          <p class="fineprint" style="margin:10px 0 0;">Die Bezahlung der Artikel erfolgt bei Abholung.</p>
+        </form>
+      </aside>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <a href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">Instagram</a>
+      <a class="psv-badge" href="https://www.psv-flensburg.de/" rel="noreferrer noopener" target="_blank">
+        <img alt="PSV Logo" class="psv-badge__logo" src="images/psv.png"/>
+        <span class="psv-badge__text">Mitglied des Sportvereins</span>
+      </a>
+      <span>© <span id="y"></span> FlensSabers</span>
+    </div>
+  </footer>
 </main>
-<!-- Gate (also protects direct access to members.html) -->
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="remote-config.js"></script>
+<script src="live-data.js"></script>
+<script src="members-live.js"></script>
 
 <script>
-  // Footer year
   document.getElementById('y').textContent = new Date().getFullYear();
 
-  // EmailJS config
   const EMAILJS_PUBLIC_KEY  = "4CnavaqKWFWhNVTIm";
   const EMAILJS_SERVICE_ID  = "service_dy86jgf";
   const EMAILJS_TEMPLATE_ID = "template_rb3ufnr";
 
-  // Init EmailJS (loaded via CDN script tag above)
   try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch (e) { console.warn("EmailJS init failed", e); }
 
-  // --- Simple merch placeholders + cart -> EmailJS ---
   (function () {
     const PRODUCTS = [
-        { id: 'tee',     name: 'FlensSabers T-Shirt',           meta: 'Black • Unisex • U Auschnitt•',  price: '15,00 €', images: ['images/shop/tee-front.png', 'images/shop/tee-back.png'] },
-      { id: 'tee',     name: 'FlensSabers T-Shirt',           meta: 'Black • Unisex • V Auschnitt•',  price: '15,00 €', images: ['images/shop/vtv.png', 'images/shop/vth.png'] },
-          { id: 'pullover',name: 'FlensSabers Pullover',          meta: 'Black • Unisex •', price: '22,00 €', images: ['images/shop/pl-front.png', 'images/shop/pl-back.png'] },
-            { id: 'Cap',  name: 'FlensSabers Mütze',            meta: 'Black • Unisex •', price: '8,00 €', images: ['images/shop/mü-front.png'] },
+      { id: 'tee-u', name: 'FlensSabers T-Shirt', meta: 'Black • Unisex • U Ausschnitt', price: '15,00 €', images: ['images/shop/tee-front.png', 'images/shop/tee-back.png'] },
+      { id: 'tee-v', name: 'FlensSabers T-Shirt', meta: 'Black • Unisex • V Ausschnitt', price: '15,00 €', images: ['images/shop/vtv.png', 'images/shop/vth.png'] },
+      { id: 'pullover', name: 'FlensSabers Pullover', meta: 'Black • Unisex', price: '22,00 €', images: ['images/shop/pl-front.png', 'images/shop/pl-back.png'] },
+      { id: 'cap', name: 'FlensSabers Mütze', meta: 'Black • Unisex', price: '8,00 €', images: ['images/shop/m#U00fc-front.png'] }
     ];
 
     const grid      = document.getElementById('shopGrid');
@@ -186,14 +187,12 @@
     const cartList  = document.getElementById('cartList');
     const sendBtn   = document.getElementById('sendOrder');
     const clearBtn  = document.getElementById('clearCart');
-
     const form      = document.getElementById('orderForm');
     const firstEl   = document.getElementById('buyerFirst');
     const lastEl    = document.getElementById('buyerLast');
     const emailEl   = document.getElementById('buyerEmail');
     const codeEl    = document.getElementById('buyerCode');
-
-    const cart = new Map(); // key -> {p, size, qty}  (key = `${id}__${size}`)
+    const cart = new Map();
 
     const renderGrid = () => {
       grid.innerHTML = PRODUCTS.map(p => {
@@ -248,10 +247,8 @@
     const add = (id, size) => {
       const p = PRODUCTS.find(x => x.id === id);
       if (!p) return;
-
       const chosen = (size || '').trim();
       if (!chosen) return;
-
       const key = `${id}__${chosen}`;
       const entry = cart.get(key);
       cart.set(key, { p, size: chosen, qty: (entry?.qty || 0) + 1 });
@@ -276,16 +273,15 @@
       renderCart();
       renderGrid();
     };
+
     const buildOrder = () => {
       const items = [...cart.entries()].map(([key, v]) => ({ key, ...v }));
       if (!items.length) return null;
-
       const lines = [];
       items.forEach(({p, size, qty}) => {
         lines.push(`- ${qty}x ${p.name}${size ? ` (Größe: ${size})` : ''} — ${p.price}`);
         if (p.meta) lines.push(`  Details: ${p.meta}`);
       });
-
       return {
         items,
         order_text: lines.join('\n'),
@@ -326,7 +322,6 @@
       renderGrid();
     });
 
-    // Send order via EmailJS
     sendBtn.addEventListener('click', async () => {
       const order = buildOrder();
       if (!order) {
@@ -344,14 +339,12 @@
         return;
       }
 
-      // very simple email sanity check (browser validation should catch most)
       if (!/^\S+@\S+\.\S+$/.test(buyer_email)) {
         alert('Bitte eine gültige E‑Mail-Adresse eingeben.');
         emailEl.focus();
         return;
       }
 
-      // passcode check (do NOT reveal hint)
       if (passcode !== 'fs') {
         alert('Passcode ist falsch.');
         codeEl.focus();
@@ -385,98 +378,5 @@
     });
   })();
 </script>
-
-<script>
-  // -------------------- Events / Kalender (FullCalendar) --------------------
-  // 👉 Events bitte hier im Code pflegen:
-  // Format: { title, start, end?, extendedProps: { place?, note? } }
-  (function(){
-    const calEl = document.getElementById('fsCalendar');
-    if(!calEl || !window.FullCalendar) return;
-
-    const FS_EVENTS = [
-      {
-        title: 'Training – Rudeschule',
-        start: '2026-02-24T20:00:00',
-        end: '2026-02-24T22:00:00',
-        extendedProps: { place: 'Flensburg', note: 'Bitte 10 min vorher da sein.' }
-      },
-      {
-        title: 'Training – Gemeinschaftsschule West',
-        start: '2026-02-27T18:00:00',
-        end: '2026-02-27T21:00:00',
-        extendedProps: { place: 'Flensburg', note: 'Bitte 10 min vorher da sein.' }
-      },
-  
-    ];
-
-    function fmtDate(iso){
-      try {
-        return new Date(iso).toLocaleString('de-DE', { dateStyle:'medium', timeStyle:'short' });
-      } catch(e){ return iso; }
-    }
-
-    function renderUpcoming(events){
-      const listEl = document.getElementById('upcomingList');
-      if(!listEl) return;
-      const now = new Date();
-      const upcoming = (events || [])
-        .filter(ev => ev.start && new Date(ev.start) >= new Date(now.getTime() - 60*60*1000))
-        .sort((a,b)=> new Date(a.start) - new Date(b.start))
-        .slice(0, 10);
-
-      if(upcoming.length === 0){
-        listEl.innerHTML = '<div class="events-empty">Aktuell sind keine Termine eingetragen.</div>';
-        return;
-      }
-
-      listEl.innerHTML = upcoming.map(ev => {
-        const place = (ev.extendedProps && ev.extendedProps.place) ? ev.extendedProps.place : '';
-        const note  = (ev.extendedProps && ev.extendedProps.note) ? ev.extendedProps.note : '';
-        return `
-          <div class="events-item">
-            <div class="events-item__title">${ev.title || 'Event'}</div>
-            <div class="events-item__meta">
-              <span>${fmtDate(ev.start)}</span>${place ? ` • <span>${place}</span>` : ''}
-            </div>
-            ${note ? `<div class="events-item__note">${note}</div>` : ''}
-          </div>
-        `;
-      }).join('');
-    }
-
-    const calendar = new FullCalendar.Calendar(calEl, {
-      initialView: 'dayGridMonth',
-      height: 'auto',
-      locale: 'de',
-      firstDay: 1,
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,listMonth'
-      },
-      events: FS_EVENTS,
-      eventClick: function(info){
-        const ev = info.event;
-        const place = ev.extendedProps?.place ? `
-Ort: ${ev.extendedProps.place}` : '';
-        const note  = ev.extendedProps?.note  ? `
-Notiz: ${ev.extendedProps.note}` : '';
-        const end   = ev.end ? `
-Ende: ${fmtDate(ev.end)}` : '';
-        alert(`${ev.title}
-Start: ${fmtDate(ev.start)}${end}${place}${note}`);
-      }
-    });
-
-    calendar.render();
-    renderUpcoming(FS_EVENTS);
-  })();
-</script>
 </body>
 </html>
-
-
-
-
-

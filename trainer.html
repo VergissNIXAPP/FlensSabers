@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#06070b"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>FlensSabers – Trainer Remote</title>
+<link rel="icon" href="images/logo.png"/>
+<link rel="apple-touch-icon" href="images/logo.png"/>
+<link rel="manifest" href="trainer.webmanifest"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="bg">
+  <div aria-hidden="true" class="bg__image"></div>
+  <div aria-hidden="true" class="bg__vignette"></div>
+  <div aria-hidden="true" class="bg__grain"></div>
+  <div aria-hidden="true" class="bg__sweep"></div>
+</div>
+
+<div class="gate is-open" id="trainerGate" aria-hidden="false">
+  <div class="gate__backdrop"></div>
+  <div class="gate__panel" role="dialog" aria-modal="true" aria-labelledby="trainerGateTitle">
+    <div class="gate__head">
+      <div class="gate__badge">Trainer Remote</div>
+      <h2 id="trainerGateTitle">FlensSabers Fernbedienung</h2>
+      <p class="gate__sub">Gib das Admin-Passwort ein, um Kalender und Live-Ticker zu steuern.</p>
+    </div>
+    <form class="gate__form" id="trainerGateForm" autocomplete="off">
+      <label class="gate__label" for="trainerPass">Passwort</label>
+      <input class="gate__input" id="trainerPass" type="password" inputmode="text" placeholder="••••••"/>
+      <div class="gate__row">
+        <button class="btn btn--primary gate__btn" type="submit">Einloggen</button>
+        <a class="btn btn--ghost gate__btn" href="members.html">Zurück</a>
+      </div>
+      <div class="gate__error" id="trainerGateError" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+
+<main class="wrap trainer-wrap" id="trainerApp" hidden>
+  <section class="member-hero trainer-hero">
+    <div class="kicker">Trainer Remote • FlensSabers</div>
+    <h1 class="member-hero__title">Live-Steuerung für <span class="title__glow">Kalender</span> &amp; <span class="title__thin">Ticker</span></h1>
+    <p class="member-hero__sub">Hier kann der Trainer direkt Einträge anlegen, ändern und für die Members-Seite veröffentlichen.</p>
+    <div class="trainer-status">
+      <span class="trainer-status__chip" id="trainerStatusChip">LOKAL</span>
+      <span class="trainer-status__text" id="trainerStatusText">Prüfe Verbindung…</span>
+    </div>
+    <div class="cta" style="margin-top:14px;">
+      <a class="btn btn--ghost" href="members.html">👀 Members-Seite öffnen</a>
+      <button class="btn btn--ghost" type="button" id="resetAllBtn">↺ Standarddaten laden</button>
+    </div>
+  </section>
+
+  <section class="section trainer-grid-section">
+    <div class="trainer-grid">
+      <article class="card trainer-card">
+        <div class="trainer-card__head">
+          <h2>Live-Ticker bearbeiten</h2>
+          <p>Neue Hinweise speichern, priorisieren oder ausblenden.</p>
+        </div>
+
+        <form class="trainer-form" id="tickerEditorForm">
+          <input type="hidden" id="tickerId"/>
+          <div class="field">
+            <label for="tickerText">Ticker-Text</label>
+            <textarea id="tickerText" class="trainer-textarea" placeholder="z. B. Treffpunkt heute schon um 19:30 Uhr vor der Halle."></textarea>
+          </div>
+          <div class="trainer-form__row trainer-form__row--split">
+            <div class="field">
+              <label for="tickerPriority">Priorität</label>
+              <select id="tickerPriority" class="trainer-select">
+                <option value="high">Wichtig</option>
+                <option value="normal" selected>Live</option>
+                <option value="low">Info</option>
+              </select>
+            </div>
+            <label class="trainer-checkbox">
+              <input type="checkbox" id="tickerActive" checked/>
+              <span>Sofort sichtbar auf der Members-Seite</span>
+            </label>
+          </div>
+          <div class="trainer-form__actions">
+            <button class="btn btn--primary" type="submit">Speichern</button>
+            <button class="btn btn--ghost" type="button" id="tickerResetBtn">Zurücksetzen</button>
+          </div>
+        </form>
+
+        <div class="admin-list" id="trainerTickerList"></div>
+      </article>
+
+      <article class="card trainer-card trainer-card--calendar">
+        <div class="trainer-card__head">
+          <h2>Kalender verwalten</h2>
+          <p>Tippe im Kalender einfach auf einen Tag, um einen neuen Termin anzulegen.</p>
+        </div>
+
+        <div id="trainerCalendar"></div>
+
+        <form class="trainer-form trainer-form--calendar" id="eventEditorForm">
+          <input type="hidden" id="eventId"/>
+          <div class="trainer-inline-note" id="eventInfo">Tippe im Kalender auf einen Tag oder wähle einen bestehenden Termin aus.</div>
+
+          <div class="field">
+            <label for="eventTitle">Titel</label>
+            <input id="eventTitle" type="text" placeholder="z. B. Show im Kino"/>
+          </div>
+
+          <div class="trainer-form__row trainer-form__row--triple">
+            <div class="field">
+              <label for="eventDate">Datum</label>
+              <input id="eventDate" type="date"/>
+            </div>
+            <div class="field">
+              <label for="eventStart">Start</label>
+              <input id="eventStart" type="time"/>
+            </div>
+            <div class="field">
+              <label for="eventEnd">Ende</label>
+              <input id="eventEnd" type="time"/>
+            </div>
+          </div>
+
+          <label class="trainer-checkbox trainer-checkbox--left">
+            <input type="checkbox" id="eventAllDay"/>
+            <span>Ganztägiger Termin</span>
+          </label>
+
+          <div class="field">
+            <label for="eventPlace">Ort</label>
+            <input id="eventPlace" type="text" placeholder="z. B. Rudeschule"/>
+          </div>
+
+          <div class="field">
+            <label for="eventNote">Zusatzinfo</label>
+            <textarea id="eventNote" class="trainer-textarea" placeholder="z. B. 30 Minuten vorher da sein."></textarea>
+          </div>
+
+          <div class="trainer-form__actions trainer-form__actions--spread">
+            <div class="trainer-form__actions trainer-form__actions--stack-mobile">
+              <button class="btn btn--primary" type="submit">Termin speichern</button>
+              <button class="btn btn--ghost" type="button" id="eventResetBtn">Neu anlegen</button>
+            </div>
+            <button class="btn btn--ghost" type="button" id="eventDeleteBtn" disabled>Termin löschen</button>
+          </div>
+        </form>
+      </article>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="remote-config.js"></script>
+<script src="live-data.js"></script>
+<script src="trainer.js"></script>
+</body>
+</html>

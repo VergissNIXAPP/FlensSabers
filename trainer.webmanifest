@@ -1,0 +1,15 @@
+{
+  "name": "FlensSabers Trainer Remote",
+  "short_name": "Trainer Remote",
+  "start_url": "trainer.html",
+  "display": "standalone",
+  "background_color": "#06070b",
+  "theme_color": "#06070b",
+  "icons": [
+    {
+      "src": "images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
