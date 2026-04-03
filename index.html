@@ -245,7 +245,45 @@
       const err  = document.getElementById('gateError');
       if(!gate || !form || !pass) return;
 
+      const getCookie = (name) => {
+        try{
+          const prefix = `${name}=`;
+          return document.cookie.split(';').map(item => item.trim()).find(item => item.startsWith(prefix))?.slice(prefix.length) || '';
+        }catch(_){
+          return '';
+        }
+      };
+
+      const setCookie = (name, value, days) => {
+        try{
+          const date = new Date();
+          date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+          document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/; SameSite=Lax`;
+        }catch(_){ }
+      };
+
+      const hasMemberAccess = () => {
+        try{
+          return sessionStorage.getItem('fs_member') === '1'
+            || localStorage.getItem('fs_member_pwa') === '1'
+            || getCookie('fs_member') === '1';
+        }catch(_){
+          return getCookie('fs_member') === '1';
+        }
+      };
+
+      const persistMemberAccess = () => {
+        try{ sessionStorage.setItem('fs_member', '1'); }catch(_){ }
+        try{ localStorage.setItem('fs_member_pwa', '1'); }catch(_){ }
+        setCookie('fs_member', '1', 365);
+      };
+
       const openGate = () => {
+        if(hasMemberAccess()){
+          persistMemberAccess();
+          window.location.href = 'members.html';
+          return;
+        }
         gate.classList.add('is-open');
         gate.setAttribute('aria-hidden','false');
         if(err) err.textContent = '';
@@ -313,8 +351,7 @@
         e.preventDefault();
         const val = (pass.value || '').trim();
         if(val === 'DarkSide'){
-          try{ sessionStorage.setItem('fs_member', '1'); }catch(_){ }
-          try{ localStorage.setItem('fs_member_pwa', '1'); }catch(_){ }
+          persistMemberAccess();
           window.location.href = 'members.html';
           return;
         }

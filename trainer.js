@@ -89,11 +89,30 @@
     }
   }
 
+  function setCookie(name, value, days){
+    try{
+      const date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/; SameSite=Lax`;
+    }catch(_){ }
+  }
+
+  function getCookie(name){
+    try{
+      const prefix = `${name}=`;
+      return document.cookie.split(';').map(item => item.trim()).find(item => item.startsWith(prefix))?.slice(prefix.length) || '';
+    }catch(_){
+      return '';
+    }
+  }
+
   function hasTrainerAccess(){
     try{
-      return sessionStorage.getItem('fs_trainer') === '1' || localStorage.getItem('fs_trainer_pwa') === '1';
+      return sessionStorage.getItem('fs_trainer') === '1'
+        || localStorage.getItem('fs_trainer_pwa') === '1'
+        || getCookie('fs_trainer') === '1';
     }catch(_){
-      return false;
+      return getCookie('fs_trainer') === '1';
     }
   }
 
@@ -104,6 +123,7 @@
     try{
       localStorage.setItem('fs_trainer_pwa', '1');
     }catch(_){ }
+    setCookie('fs_trainer', '1', 365);
   }
 
   function setupInstallUi(){

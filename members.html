@@ -35,17 +35,34 @@
 <body>
 <script>
 (function(){
+  const getCookie = (name) => {
+    try{
+      const prefix = `${name}=`;
+      return document.cookie.split(';').map(item => item.trim()).find(item => item.startsWith(prefix))?.slice(prefix.length) || '';
+    }catch(_){
+      return '';
+    }
+  };
+
+  const setCookie = (name, value, days) => {
+    try{
+      const date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/; SameSite=Lax`;
+    }catch(_){ }
+  };
+
   try{
     const sessionOk = sessionStorage.getItem('fs_member') === '1';
     const storedOk = localStorage.getItem('fs_member_pwa') === '1';
-    if(!sessionOk && !storedOk){
+    const cookieOk = getCookie('fs_member') === '1';
+    if(!sessionOk && !storedOk && !cookieOk){
       window.location.replace('index.html');
       return;
     }
-    if(sessionOk || storedOk){
-      sessionStorage.setItem('fs_member', '1');
-      localStorage.setItem('fs_member_pwa', '1');
-    }
+    sessionStorage.setItem('fs_member', '1');
+    localStorage.setItem('fs_member_pwa', '1');
+    setCookie('fs_member', '1', 365);
   }catch(_){ }
 })();
 </script>
@@ -78,11 +95,12 @@
       Hier findest du interne Updates, Termine und unseren Merchbereich.<br/>
       <strong>Live-Ticker und Kalender werden automatisch aktualisiert.</strong>
     </p>
-    <div class="cta" style="margin-top:14px;">
+    <div class="cta member-hero__actions" style="margin-top:14px;">
       <a class="btn btn--ghost" href="index.html">← Zurück zur Homepage</a>
       <a class="btn btn--primary" href="#events">📅 Zum Kalender</a>
+      <button class="btn btn--ghost btn--compact" type="button" id="installMembersTopBtn">📲 App installieren</button>
     </div>
-    <div class="trainer-install-bar" id="membersInstallBar" hidden>
+    <div class="trainer-install-bar member-install-bar" id="membersInstallBar" hidden>
       <button class="btn btn--primary" type="button" id="installMembersAppBtn">📲 FlensSabers Members installieren</button>
       <div class="trainer-install-hint" id="membersInstallHint"></div>
     </div>

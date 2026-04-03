@@ -1,4 +1,4 @@
-const CACHE_NAME = "flenssabers-trainer-pwa-v1";
+const CACHE_NAME = "flenssabers-trainer-pwa-v2";
 const PRECACHE_URLS = [
   "./trainer.html",
   "./trainer.js",
