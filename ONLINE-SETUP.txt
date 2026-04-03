@@ -34,3 +34,9 @@ Hinweis:
 Der Admin-Schutz mit Passwort 'admin' läuft im Frontend der Trainer-Seite.
 Das ist bequem, aber kein vollwertiger Hochsicherheits-Login. Wenn du später willst,
 kann ich dir dafür auch noch eine echte Firebase-Authentication-Version bauen.
+
+
+MEMBERS PWA:
+- members.html kann jetzt als eigene WebApp „FlensSabers Members“ installiert werden.
+- Dateien dafür: members.webmanifest, members-sw.js, members-pwa.js und icons/members-*.png
+- Für iPhone/iPad: in Safari auf Teilen > Zum Home-Bildschirm tippen.

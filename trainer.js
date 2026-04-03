@@ -89,6 +89,23 @@
     }
   }
 
+  function hasTrainerAccess(){
+    try{
+      return sessionStorage.getItem('fs_trainer') === '1' || localStorage.getItem('fs_trainer_pwa') === '1';
+    }catch(_){
+      return false;
+    }
+  }
+
+  function persistTrainerAccess(){
+    try{
+      sessionStorage.setItem('fs_trainer', '1');
+    }catch(_){ }
+    try{
+      localStorage.setItem('fs_trainer_pwa', '1');
+    }catch(_){ }
+  }
+
   function setupInstallUi(){
     if(isStandaloneMode()){
       hideInstallBar();
@@ -305,13 +322,11 @@
   window.addEventListener('DOMContentLoaded', () => {
     registerTrainerPwa();
     setupInstallUi();
-    try{
-      if(sessionStorage.getItem('fs_trainer') === '1'){
-        unlock();
-      } else {
-        lock();
-      }
-    }catch(_){
+
+    if(hasTrainerAccess()){
+      persistTrainerAccess();
+      unlock();
+    } else {
       lock();
     }
 
@@ -325,7 +340,7 @@
           gateInput?.select();
           return;
         }
-        try{ sessionStorage.setItem('fs_trainer', '1'); }catch(_){ }
+        persistTrainerAccess();
         if(gateError) gateError.textContent = '';
         unlock();
         await initData();

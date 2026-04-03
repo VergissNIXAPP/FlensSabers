@@ -314,6 +314,7 @@
         const val = (pass.value || '').trim();
         if(val === 'DarkSide'){
           try{ sessionStorage.setItem('fs_member', '1'); }catch(_){ }
+          try{ localStorage.setItem('fs_member_pwa', '1'); }catch(_){ }
           window.location.href = 'members.html';
           return;
         }

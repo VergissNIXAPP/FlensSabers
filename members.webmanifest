@@ -1,0 +1,41 @@
+{
+  "id": "./members.html",
+  "name": "FlensSabers Members",
+  "short_name": "FS Members",
+  "description": "Installierbare Members-WebApp für Live-Ticker, Kalender und Merch der FlensSabers.",
+  "lang": "de",
+  "start_url": "./members.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "window-controls-overlay"
+  ],
+  "background_color": "#06070b",
+  "theme_color": "#06070b",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icons/members-app-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/members-app-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/members-app-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/members-app-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
