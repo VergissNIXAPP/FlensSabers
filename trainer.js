@@ -7,6 +7,9 @@
   const app = document.getElementById('trainerApp');
   const statusChip = document.getElementById('trainerStatusChip');
   const statusText = document.getElementById('trainerStatusText');
+  const installBar = document.getElementById('trainerInstallBar');
+  const installBtn = document.getElementById('installTrainerAppBtn');
+  const installHint = document.getElementById('trainerInstallHint');
   const tickerForm = document.getElementById('tickerEditorForm');
   const tickerId = document.getElementById('tickerId');
   const tickerText = document.getElementById('tickerText');
@@ -32,6 +35,7 @@
   let state = { ticker: [], events: [] };
   let calendar = null;
   let selectedDate = '';
+  let deferredInstallPrompt = null;
 
   if(!window.FlensLiveData) return;
 
@@ -53,6 +57,71 @@
 
   function pad(value){
     return String(value).padStart(2, '0');
+  }
+
+  function isStandaloneMode(){
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  }
+
+  function isIosDevice(){
+    const ua = window.navigator.userAgent || '';
+    return /iphone|ipad|ipod/i.test(ua);
+  }
+
+  function showInstallBar(message, showButton){
+    if(!installBar || !installHint) return;
+    installBar.hidden = false;
+    installHint.textContent = message || '';
+    if(installBtn) installBtn.hidden = !showButton;
+  }
+
+  function hideInstallBar(){
+    if(installBar) installBar.hidden = true;
+    if(installBtn) installBtn.hidden = true;
+  }
+
+  async function registerTrainerPwa(){
+    if(!('serviceWorker' in navigator)) return;
+    try{
+      await navigator.serviceWorker.register('trainer-sw.js');
+    }catch(err){
+      console.warn('[FlensSabers] trainer sw registration failed', err);
+    }
+  }
+
+  function setupInstallUi(){
+    if(isStandaloneMode()){
+      hideInstallBar();
+      return;
+    }
+
+    if(isIosDevice()){
+      showInstallBar('In Safari auf Teilen tippen und dann „Zum Home-Bildschirm“ wählen, damit die Trainer-Remote wie eine WebApp installiert wird.', false);
+    }
+
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault();
+      deferredInstallPrompt = event;
+      showInstallBar('Installiere die Trainer-Remote als WebApp für schnellen Vollbild-Zugriff mit eigenem App-Icon.', true);
+    });
+
+    window.addEventListener('appinstalled', () => {
+      deferredInstallPrompt = null;
+      showInstallBar('Trainer Remote wurde installiert.', false);
+      window.setTimeout(hideInstallBar, 2400);
+    });
+
+    installBtn?.addEventListener('click', async () => {
+      if(!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      const result = await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+      if(result?.outcome === 'accepted'){
+        showInstallBar('Installation gestartet …', false);
+      } else {
+        showInstallBar('Installation abgebrochen. Über das Browser-Menü kannst du die Trainer-Remote später jederzeit installieren.', false);
+      }
+    });
   }
 
   function toLocalDateInput(value){
@@ -234,6 +303,8 @@
   }
 
   window.addEventListener('DOMContentLoaded', () => {
+    registerTrainerPwa();
+    setupInstallUi();
     try{
       if(sessionStorage.getItem('fs_trainer') === '1'){
         unlock();

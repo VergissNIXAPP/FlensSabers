@@ -4,11 +4,13 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <meta name="theme-color" content="#06070b"/>
+<meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Trainer Remote"/>
 <title>FlensSabers – Trainer Remote</title>
-<link rel="icon" href="images/logo.png"/>
-<link rel="apple-touch-icon" href="images/logo.png"/>
+<link rel="icon" type="image/png" sizes="64x64" href="icons/trainer-favicon-64.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="icons/trainer-app-180.png"/>
 <link rel="manifest" href="trainer.webmanifest"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -52,6 +54,10 @@
     <div class="trainer-status">
       <span class="trainer-status__chip" id="trainerStatusChip">LOKAL</span>
       <span class="trainer-status__text" id="trainerStatusText">Prüfe Verbindung…</span>
+    </div>
+    <div class="trainer-install-bar" id="trainerInstallBar" hidden>
+      <button class="btn btn--primary" type="button" id="installTrainerAppBtn">📲 Trainer-App installieren</button>
+      <div class="trainer-install-hint" id="trainerInstallHint"></div>
     </div>
     <div class="cta" style="margin-top:14px;">
       <a class="btn btn--ghost" href="members.html">👀 Members-Seite öffnen</a>

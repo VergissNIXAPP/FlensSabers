@@ -1301,6 +1301,24 @@ select:focus{ box-shadow: 0 0 0 2px rgba(255,255,255,.10), 0 22px 70px rgba(0,0,
   color: rgba(234,240,255,.82);
   font-weight: 700;
 }
+.trainer-install-bar{
+  display:flex;
+  gap: 14px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  box-shadow: 0 16px 40px rgba(0,0,0,.24);
+}
+.trainer-install-hint{
+  color: rgba(234,240,255,.80);
+  line-height: 1.55;
+  font-weight: 700;
+  flex: 1 1 280px;
+}
 .trainer-grid{
   display:grid;
   grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
@@ -1469,4 +1487,5 @@ select:focus{ box-shadow: 0 0 0 2px rgba(255,255,255,.10), 0 22px 70px rgba(0,0,
   .trainer-form__row--triple{ grid-template-columns: 1fr; }
   .trainer-form__actions--spread{ align-items:stretch; }
   .trainer-form__actions--stack-mobile{ width:100%; }
+  .trainer-install-bar .btn{ width:100%; }
 }

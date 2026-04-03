@@ -1,7 +1,7 @@
-FlensSabers Live-Remote – Firebase-Version
-==========================================
+FlensSabers Live-Remote – Firebase-Version + Trainer-WebApp
+==========================================================
 
-Diese ZIP ist bereits direkt mit deinem Firebase-Projekt verbunden.
+Diese ZIP ist direkt mit deinem Firebase-Projekt verbunden.
 
 Aktiv:
 - Trainer-Fernbedienung: trainer.html
@@ -9,10 +9,14 @@ Aktiv:
 - Live-Ticker auf members.html
 - Live-Kalender auf members.html
 - Speicherung und Live-Synchronisierung über Firebase Firestore
+- trainer.html ist jetzt als installierbare WebApp vorbereitet
+- eigenes FlensSabers Trainer-App-Icon ist enthalten
 
 Wichtig:
 - Änderungen auf trainer.html werden nach dem Speichern live auf members.html angezeigt.
 - Alle Geräte greifen auf dieselben Daten in Firestore zu.
+- Auf unterstützten Browsern kann die Trainer-Seite direkt als App installiert werden.
+- Auf iPhone/iPad: Safari öffnen > Teilen > Zum Home-Bildschirm.
 
 Empfohlene Firestore-Regeln (Beispiel – anpassen, wenn du später echten Login willst):
 --------------------------------------------------------------------------

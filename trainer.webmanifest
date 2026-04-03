@@ -1,15 +1,38 @@
 {
+  "id": "./trainer.html",
   "name": "FlensSabers Trainer Remote",
   "short_name": "Trainer Remote",
-  "start_url": "trainer.html",
+  "description": "Installierbare Trainer-Fernbedienung für Live-Ticker und Kalender der FlensSabers.",
+  "lang": "de",
+  "start_url": "./trainer.html",
+  "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "window-controls-overlay"],
   "background_color": "#06070b",
   "theme_color": "#06070b",
+  "orientation": "any",
   "icons": [
     {
-      "src": "images/logo.png",
+      "src": "icons/trainer-app-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/trainer-app-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/trainer-app-512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "icons/trainer-app-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
