@@ -1,4 +1,4 @@
-const CACHE_NAME = "flenssabers-members-pwa-v3";
+const CACHE_NAME = "flenssabers-members-pwa-v5";
 const PRECACHE_URLS = [
   "./members.html",
   "./members-live.js",
