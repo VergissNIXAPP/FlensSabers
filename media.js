@@ -8,9 +8,9 @@
   if(!grid || !lightbox || !stage) return;
 
   const fallbackItems = [
-    { type:'image', src:'images/team.webp', fallback:'images/team.png', alt:'FlensSabers Team beim Laserschwerttraining', label:'Team' },
-    { type:'image', src:'images/gruppe.webp', fallback:'images/gruppe.png', alt:'FlensSabers Gruppe beim Training', label:'Training' },
-    { type:'image', src:'images/portrait.webp', fallback:'images/portrait.png', alt:'FlensSabers bei einem Auftritt', label:'Event' }
+    { type:'image', src:'media/team.webp', fallback:'media/team.png', alt:'FlensSabers Team beim Laserschwerttraining', label:'Team' },
+    { type:'image', src:'media/gruppe.webp', fallback:'media/gruppe.png', alt:'FlensSabers Gruppe beim Training', label:'Training' },
+    { type:'image', src:'media/portrait.webp', fallback:'media/portrait.png', alt:'FlensSabers bei einem Auftritt', label:'Event' }
   ];
 
   const supplied = Array.isArray(window.FLENS_MEDIA) ? window.FLENS_MEDIA : [];
