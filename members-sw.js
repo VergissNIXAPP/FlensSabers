@@ -1,4 +1,4 @@
-const CACHE = 'flenssabers-members-v2026-07';
+const CACHE = 'flenssabers-members-v2026-08';
 const CORE = [
   './members.html', './styles.css', './site.js', './members-pwa.js',
   './members-live.js', './live-data.js', './remote-config.js',
