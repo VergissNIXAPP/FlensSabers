@@ -3,7 +3,9 @@
 <html lang="de">
 <head>
   <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+  <meta name="theme-color" content="#07080d"/>
+  <meta name="color-scheme" content="dark"/>
   <title>FlensSabers – Media</title>
   <meta content="Bilder & Clips der FlensSabers" name="description"/>
   <link href="images/logo.png" rel="icon"/>
@@ -13,7 +15,8 @@
   <link href="styles.css" rel="stylesheet"/>
 </head>
 
-<body>
+<body class="page-media">
+  <a class="skip-link" href="#mainContent">Zum Inhalt springen</a>
   <div class="bg">
     <div aria-hidden="true" class="bg__image"></div>
     <div aria-hidden="true" class="bg__vignette"></div>
@@ -24,10 +27,11 @@
   <header class="topbar">
     <div class="topbar__inner">
       <a aria-label="FlensSabers Start" class="brand" href="index.html">
-        <img alt="FlensSabers Logo" class="brand__logo" src="images/logo.png"/>
+        <img alt="FlensSabers Logo" class="brand__logo" src="images/logo-ui.webp" width="716" height="720" decoding="async"/>
         <span class="brand__text">FlensSabers</span>
       </a>
-      <nav class="nav">
+      <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="siteNav" data-nav-toggle><span aria-hidden="true">☰</span></button>
+      <nav class="nav" id="siteNav">
         <a href="index.html#about">Über uns</a>
         <a href="index.html#training">Training</a>
         <a class="is-active" href="media.html">Media</a>
@@ -36,12 +40,15 @@
       </nav>
     </div>
   </header>
+  <div class="nav-dim" data-nav-close aria-hidden="true"></div>
 
-  <main class="wrap" id="top">
+  <main class="wrap" id="mainContent">
+    <div id="top" aria-hidden="true"></div>
     <section class="section">
-      <div class="section__head">
-        <h2>Media</h2>
-        <p></p>
+      <div class="section__head media-page__head">
+        <div class="kicker">FlensSabers • Media</div>
+        <h1>Momente. Bewegung. Energie.</h1>
+        <p>Einblicke in Training, Auftritte und die Community hinter den FlensSabers.</p>
       </div>
 
       <div class="media-wall" aria-label="Media Galerie">
@@ -73,6 +80,7 @@
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
+  <script src="site.js"></script>
   <script src="media.js"></script>
 </body>
 </html>

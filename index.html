@@ -3,7 +3,10 @@
 <html lang="de">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<meta name="theme-color" content="#07080d"/>
+<meta name="color-scheme" content="dark"/>
+<link rel="preload" as="image" href="images/portrait.webp" type="image/webp" fetchpriority="high"/>
 <title>FlensSabers – Laserschwertsport in Flensburg</title>
 <meta content="Laserschwertsport in Flensburg: Technik, Fitness und Teamgeist. Einsteiger willkommen – komm zum Probetraining und werde Teil der FlensSabers." name="description"/>
 <meta content="FlensSabers – Laserschwertsport in Flensburg" property="og:title"/>
@@ -15,7 +18,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="styles.css" rel="stylesheet">
 </link></head>
-<body>
+<body class="page-home">
+<a class="skip-link" href="#mainContent">Zum Inhalt springen</a>
 <div class="bg">
 <div aria-hidden="true" class="bg__image"></div>
 <div aria-hidden="true" class="bg__vignette"></div>
@@ -25,7 +29,7 @@
 <header class="topbar">
 <div class="topbar__inner">
 <a aria-label="FlensSabers Start" class="brand" href="#top">
-<img alt="FlensSabers Logo" class="brand__logo" src="images/logo.png"/>
+<img alt="FlensSabers Logo" class="brand__logo" src="images/logo-ui.webp" width="716" height="720" decoding="async"/>
 <span class="brand__text">FlensSabers</span>
 </a>
 <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="siteNav" data-nav-toggle>
@@ -43,7 +47,8 @@
 </div>
 </header>
 <div class="nav-dim" data-nav-close aria-hidden="true"></div>
-<main class="wrap" id="top">
+<main class="wrap" id="mainContent">
+<div id="top" aria-hidden="true"></div>
 
 
 
@@ -52,8 +57,8 @@
 <section class="hero">
   <!-- PSV Vereinszugehörigkeit -->
   <div class="psv-hero-wrapper">
-    <a href="https://www.psv-flensburg.de/" target="_blank" class="psv-badge-hero">
-      <img src="images/psv.png" alt="PSV Flensburg Logo">
+    <a href="https://www.psv-flensburg.de/" target="_blank" rel="noreferrer noopener" class="psv-badge-hero">
+      <img src="images/psv.png" alt="PSV Flensburg Logo" width="180" height="180" decoding="async">
       <div class="psv-text">
         <span class="psv-sub">Offizielle Sparte des</span>
         <span class="psv-main">Polizeisportverein Flensburg</span>
@@ -71,8 +76,8 @@
           <span class="subtitle__strong">Einsteiger willkommen.</span>
 </p>
 <div class="cta">
-<a class="btn btn--primary" href="#join">⚔️ Probetraining anfragen</a>
-<a class="btn btn--ghost" href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">📸 @flenssabers</a>
+<a class="btn btn--primary" href="#join">Probetraining anfragen</a>
+<a class="btn btn--ghost" href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">@flenssabers</a>
 </div>
 <div class="stats">
 <div class="stat">
@@ -91,7 +96,10 @@
 </div>
 <div class="hero__visual">
 <div class="poster">
-<img alt="Training – FlensSabers" class="poster__img" src="images/portrait.png"/>
+<picture>
+<source srcset="images/portrait.webp" type="image/webp"/>
+<img alt="Training – FlensSabers" class="poster__img" src="images/portrait.png" width="2000" height="2000" fetchpriority="high" decoding="async"/>
+</picture>
 </div>
 </div>
 
@@ -119,7 +127,10 @@
 <section class="section section--split" id="training">
 <div class="split">
 <div class="split__media">
-<img alt="Team Training – FlensSabers" class="media" src="images/gruppe.png"/>
+<picture>
+<source srcset="images/gruppe.webp" type="image/webp"/>
+<img alt="Team Training – FlensSabers" class="media" src="images/gruppe.png" width="996" height="616" loading="lazy" decoding="async"/>
+</picture>
 <div aria-hidden="true" class="media__frame"></div>
 </div>
 <div class="split__copy">
@@ -149,14 +160,16 @@
         <p>Probetraining nach Absprache – Aufnahme <strong>erst ab 16 Jahren</strong>.</p>
       </div>
       <div class="schedule-block__grid">
-        <div class="schedule-card">
-          <div class="schedule-card__place"><a class="location-clickable" href="https://www.google.com/maps/search/?api=1&query=Lundweg+30+24941+Flensburg" target="_blank">Rudeschule</div>
-          <div class="schedule-card__time">Dienstag · 20:00–22:00</a></div>
-        </div>
-        <div class="schedule-card">
-          <div class="schedule-card__place"><a class="location-clickable" href="https://www.google.com/maps/search/?api=1&query=Friesische+Lücke+7+24937+Flensburg" target="_blank">Gemeinschaftsschule West</div>
-          <div class="schedule-card__time">Freitag · 18:00–21:00</a></div>
-        </div>
+        <a class="schedule-card location-clickable" href="https://www.google.com/maps/search/?api=1&amp;query=Lundweg+30+24941+Flensburg" target="_blank" rel="noreferrer noopener">
+          <div class="schedule-card__place">Rudeschule</div>
+          <div class="schedule-card__time">Dienstag · 20:00–22:00</div>
+          <span class="schedule-card__action">Route öffnen</span>
+        </a>
+        <a class="schedule-card location-clickable" href="https://www.google.com/maps/search/?api=1&amp;query=Friesische+Lücke+7+24937+Flensburg" target="_blank" rel="noreferrer noopener">
+          <div class="schedule-card__place">Gemeinschaftsschule West</div>
+          <div class="schedule-card__time">Freitag · 18:00–21:00</div>
+          <span class="schedule-card__action">Route öffnen</span>
+        </a>
       </div>
     </div>
   </div>
@@ -167,13 +180,13 @@
 <h2>Bereit für dein erstes Training?</h2>
 <p>Schreib uns kurz per Instagram-DM oder per E‑Mail – wir antworten fix und sagen dir, wann du zum Probetraining kommen kannst.</p>
 <div class="cta">
-<a class="btn btn--primary" href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">📩 DM an @flenssabers</a><a class="btn btn--primary btn--mail" href="mailto:mail@flenssabers.de?subject=Probetraining%20bei%20FlensSabers&amp;body=Moin%20FlensSabers%2C%0A%0Aich%20w%C3%BCrde%20gern%20zum%20Probetraining%20vorbeikommen.%0AName%3A%20%0AAlter%20%28ab%2016%29%3A%20%0AErfahrung%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">✉️ E‑Mail an mail@flenssabers.de</a>
+<a class="btn btn--primary" href="https://www.instagram.com/flenssabers/" rel="noreferrer noopener" target="_blank">DM an @flenssabers</a><a class="btn btn--primary btn--mail" href="mailto:mail@flenssabers.de?subject=Probetraining%20bei%20FlensSabers&amp;body=Moin%20FlensSabers%2C%0A%0Aich%20w%C3%BCrde%20gern%20zum%20Probetraining%20vorbeikommen.%0AName%3A%20%0AAlter%20%28ab%2016%29%3A%20%0AErfahrung%3A%20%0A%0AViele%20Gr%C3%BC%C3%9Fe%0A">E‑Mail schreiben</a>
 <a class="btn btn--ghost" href="#top">Zurück nach oben</a>
 </div>
 <p class="fineprint">Hinweis: Die Aufnahme ist <strong>erst ab 16 Jahren</strong> möglich.</p>
 </div>
 <div aria-hidden="true" class="join__logo">
-<img alt="" src="images/logo.png"/>
+<img alt="" src="images/logo-ui.webp" width="716" height="720" loading="lazy" decoding="async"/>
 </div>
 </div>
 </section>
