@@ -1,4 +1,4 @@
-const CACHE = 'flenssabers-trainer-v2026-08';
+const CACHE = 'flenssabers-trainer-v2026-07';
 const CORE = [
   './trainer.html', './styles.css', './trainer.js', './live-data.js',
   './remote-config.js', './trainer.webmanifest', './images/logo.png',
