@@ -20,3 +20,9 @@ Den kompletten Inhalt dieses Ordners auf den Webspace hochladen. Die Dateinamen 
 
 Hinweis zu bestehenden Diensten
 Firebase, EmailJS, FullCalendar und Google Fonts bleiben unverändert eingebunden und benötigen eine Internetverbindung. Bereits vorhandene echte Merch-Bilder können weiterhin unter images/shop/ mit den in members.html hinterlegten Dateinamen abgelegt werden; sie ersetzen automatisch den neutralen Fallback.
+
+Media-Ordner (automatische GitHub-Anzeige)
+- Alle unterstützten Bilder und Videos im Ordner media/ werden auf der Media-Seite automatisch gesucht und angezeigt.
+- Auf GitHub Pages erkennt media.js das Repository automatisch; bei einer eigenen Domain wird nach dem öffentlichen FlensSabers-Repository gesucht.
+- Unterstützt werden JPG, JPEG, PNG, WebP, GIF, AVIF, BMP, SVG, MP4, WebM, OGG, OGV, M4V und MOV.
+- Der media/-Ordner muss nicht in dieser ZIP enthalten sein, solange er im gleichen Website-Pfad im GitHub-Repository liegt.
